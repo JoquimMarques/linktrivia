@@ -1,0 +1,109 @@
+/* Simple Theme Selector */
+.theme-selector-simple {
+  padding: var(--spacing-md);
+}
+
+.theme-selector-simple h3 {
+  font-size: 1.125rem;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
+}
+
+.theme-selector-desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-lg);
+}
+
+.theme-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--bg-card);
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: var(--font-primary);
+}
+
+.theme-btn:hover {
+  border-color: var(--theme-color);
+  background: var(--bg-card-hover);
+}
+
+.theme-btn.active {
+  border-color: var(--theme-color);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--theme-color) 30%, transparent);
+}
+
+.theme-btn.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.theme-btn.locked:hover {
+  border-color: var(--border-default);
+}
+
+.theme-color-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-btn-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.theme-btn-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.theme-btn-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.theme-pro-tag {
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-sm);
+  color: white;
+  letter-spacing: 0.05em;
+}
+
+.theme-check {
+  color: var(--theme-color);
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .theme-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .theme-color-dot {
+    width: 32px;
+    height: 32px;
+  }
+}

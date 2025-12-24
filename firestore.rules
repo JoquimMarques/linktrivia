@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection
+    match /users/{userId} {
+      // Allow read for public profile data
+      allow read: if true;
+      
+      // Allow write only for the authenticated user
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Usernames collection (for uniqueness check)
+    match /usernames/{username} {
+      // Allow read for checking availability
+      allow read: if true;
+      
+      // Allow create only if authenticated and username belongs to user
+      allow create: if request.auth != null 
+        && request.resource.data.uid == request.auth.uid;
+      
+      // Only allow delete by the owner
+      allow delete: if request.auth != null 
+        && resource.data.uid == request.auth.uid;
+    }
+  }
+}
+
+

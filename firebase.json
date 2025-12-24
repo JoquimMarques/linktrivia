@@ -1,0 +1,41 @@
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/create-checkout-session",
+        "function": "createCheckoutSession"
+      },
+      {
+        "source": "/api/create-portal-session",
+        "function": "createPortalSession"
+      },
+      {
+        "source": "/api/stripe-webhook",
+        "function": "stripeWebhook"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs18"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}
+
+
