@@ -46,6 +46,8 @@ export const PLANS = {
       customThemes: false,
       removeBranding: false,
       prioritySupport: false,
+      periodComparison: false,
+      peakHours: false,
       usernameChangesLimit: 2
     }
   },
@@ -79,6 +81,8 @@ export const PLANS = {
       customThemes: false,
       removeBranding: false,
       prioritySupport: false,
+      periodComparison: false,
+      peakHours: false,
       usernameChangesLimit: 10
     }
   },
@@ -114,6 +118,8 @@ export const PLANS = {
       customThemes: true,
       removeBranding: true,
       prioritySupport: false,
+      periodComparison: false,
+      peakHours: false,
       usernameChangesLimit: Infinity
     }
   },
@@ -149,6 +155,8 @@ export const PLANS = {
       customThemes: true,
       removeBranding: true,
       prioritySupport: true,
+      periodComparison: true,
+      peakHours: true,
       usernameChangesLimit: Infinity
     }
   }

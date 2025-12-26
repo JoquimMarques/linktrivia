@@ -79,8 +79,9 @@ const Pricing = () => {
         { text: 'Traffic Sources', included: true },
         { text: 'Avg. Time on Page', included: true },
         { text: 'Bounce Rate', included: true },
-        { text: 'Priority Support', included: true },
-        { text: 'Early Access to Features', included: true }
+        { text: '📈 Period Comparison', included: true },
+        { text: '🕐 Peak Hours Analysis', included: true },
+        { text: 'Priority Support', included: true }
       ]
     }
   ]

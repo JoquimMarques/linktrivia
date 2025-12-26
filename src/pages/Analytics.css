@@ -520,3 +520,117 @@
     font-size: 1.5rem;
   }
 }
+
+/* Premium Features Grid */
+.premium-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Period Comparison */
+.comparison-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.comparison-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+}
+
+.comparison-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.comparison-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.comparison-value.positive {
+  color: #22c55e;
+}
+
+.comparison-value.negative {
+  color: #ef4444;
+}
+
+.comparison-value.neutral {
+  color: #f59e0b;
+}
+
+.comparison-vs {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Peak Hours Chart */
+.peak-hours-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 120px;
+  padding: var(--spacing-md) 0;
+  gap: 4px;
+}
+
+.peak-hour-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  height: 100%;
+}
+
+.peak-bar {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, var(--primary-400) 0%, var(--primary-600) 100%);
+  transition: height 0.3s ease;
+}
+
+.peak-bar.peak {
+  background: linear-gradient(180deg, #f59e0b 0%, #ea580c 100%);
+}
+
+.peak-label {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+}
+
+.peak-hours-summary {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+}
+
+.peak-hours-summary p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+  margin-bottom: var(--spacing-xs);
+}
+
+.peak-hours-summary p:last-child {
+  margin-bottom: 0;
+}
+
+.peak-hours-summary strong {
+  color: var(--text-primary);
+}
+
+/* Stat Card Locked */
+.stat-card.locked {
+  opacity: 0.6;
+  background: var(--bg-secondary);
+}
