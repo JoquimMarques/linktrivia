@@ -1,11 +1,11 @@
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from './firebase'
 
-// Flutterwave payment links (sandbox mode)
-export const FLUTTERWAVE_LINKS = {
-  basic: 'https://sandbox.flutterwave.com/pay/45xuujyyn5yj',
-  pro: 'https://sandbox.flutterwave.com/pay/geuotue7neoy',
-  premium: 'https://sandbox.flutterwave.com/pay/mxp5vedw7enc'
+// Stripe payment links
+export const STRIPE_LINKS = {
+  basic: 'https://buy.stripe.com/aFa5kE2KD6eScoW1MYaR200',
+  pro: 'https://buy.stripe.com/6oUcN670TcDg74CgHSaR201',
+  premium: 'https://buy.stripe.com/9B200k3OH8n0fB80IUaR202'
 }
 
 // Pricing plans configuration
@@ -18,22 +18,28 @@ export const PLANS = {
     interval: null,
     intervalLabel: 'forever',
     features: [
-      'Unlimited links',
+      '5 links',
       'Basic QR Code',
-      'Simple statistics (7 days)',
-      'Standard themes',
+      'Smart Stats (7 days)',
+      'Total clicks & views',
       'LinkRole Branding'
     ],
     limits: {
-      maxLinks: Infinity,
+      maxLinks: 5,
       analytics: 'basic',
       analyticsMaxDays: 7,
+      totalClicks: true,
+      avgTime: false,
+      bounceRate: false,
+      trafficSources: false,
+      countriesDevices: false,
       linkPerformance: false,
       qrCode: true,
       qrCodeCustom: false,
       customThemes: false,
       removeBranding: false,
-      prioritySupport: false
+      prioritySupport: false,
+      usernameChangesLimit: 2
     }
   },
   basic: {
@@ -43,25 +49,30 @@ export const PLANS = {
     currency: '€',
     interval: 'week',
     intervalLabel: 'per week',
-    paymentLink: FLUTTERWAVE_LINKS.basic,
+    paymentLink: STRIPE_LINKS.basic,
     features: [
       'Unlimited links',
-      'QR Code',
-      'Statistics (14 days)',
-      'Link performance',
-      'Standard themes',
-      'LinkRole Branding'
+      'Custom QR Code',
+      'Smart Stats (14 days)',
+      'Total clicks & views',
+      '10 username changes/month'
     ],
     limits: {
       maxLinks: Infinity,
       analytics: 'basic',
       analyticsMaxDays: 14,
-      linkPerformance: true,
+      totalClicks: true,
+      avgTime: false,
+      bounceRate: false,
+      trafficSources: false,
+      countriesDevices: false,
+      linkPerformance: false,
       qrCode: true,
-      qrCodeCustom: false,
+      qrCodeCustom: true,
       customThemes: false,
       removeBranding: false,
-      prioritySupport: false
+      prioritySupport: false,
+      usernameChangesLimit: 10
     }
   },
   pro: {
@@ -71,27 +82,32 @@ export const PLANS = {
     currency: '€',
     interval: 'month',
     intervalLabel: 'per month',
-    paymentLink: FLUTTERWAVE_LINKS.pro,
+    paymentLink: STRIPE_LINKS.pro,
     popular: true,
     features: [
       'Unlimited links',
-      'Custom QR Code',
-      'Advanced analytics (30 days)',
-      'Link performance',
-      'Custom themes',
-      'Remove LinkRole branding',
-      'Priority support'
+      'Custom Themes',
+      'Remove Branding',
+      'Smart Stats (30 days)',
+      'Link Performance',
+      'Countries & Devices'
     ],
     limits: {
       maxLinks: Infinity,
       analytics: 'advanced',
       analyticsMaxDays: 30,
+      totalClicks: true,
+      avgTime: false,
+      bounceRate: false,
+      trafficSources: false,
+      countriesDevices: true,
       linkPerformance: true,
       qrCode: true,
       qrCodeCustom: true,
       customThemes: true,
       removeBranding: true,
-      prioritySupport: true
+      prioritySupport: false,
+      usernameChangesLimit: Infinity
     }
   },
   premium: {
@@ -101,33 +117,37 @@ export const PLANS = {
     currency: '€',
     interval: 'year',
     intervalLabel: 'per year',
-    paymentLink: FLUTTERWAVE_LINKS.premium,
+    paymentLink: STRIPE_LINKS.premium,
     savings: 'Save 17%',
     features: [
       'Everything in Pro',
       'Unlimited analytics',
-      'Custom domain',
-      'API Access',
-      '24/7 Dedicated support',
-      'Exclusive features'
+      'Traffic Sources',
+      'Avg. Time on Page',
+      'Bounce Rate',
+      'Priority Support'
     ],
     limits: {
       maxLinks: Infinity,
       analytics: 'unlimited',
       analyticsMaxDays: 365,
+      totalClicks: true,
+      avgTime: true,
+      bounceRate: true,
+      trafficSources: true,
+      countriesDevices: true,
       linkPerformance: true,
       qrCode: true,
       qrCodeCustom: true,
       customThemes: true,
       removeBranding: true,
       prioritySupport: true,
-      customDomain: true,
-      apiAccess: true
+      usernameChangesLimit: Infinity
     }
   }
 }
 
-// Redirect to Flutterwave payment link
+// Redirect to Stripe payment link
 export const redirectToPayment = (planId, userEmail, userId) => {
   const plan = PLANS[planId]
   if (!plan || !plan.paymentLink) {
@@ -135,13 +155,17 @@ export const redirectToPayment = (planId, userEmail, userId) => {
     return
   }
 
-  // Add user info as query params for tracking
+  // Build the payment URL with tracking params
   const paymentUrl = new URL(plan.paymentLink)
+
+  // Add prefilled email
   if (userEmail) {
-    paymentUrl.searchParams.set('customer_email', userEmail)
+    paymentUrl.searchParams.set('prefilled_email', userEmail)
   }
+
+  // Add client reference for tracking (userId and planId)
   if (userId) {
-    paymentUrl.searchParams.set('customer_id', userId)
+    paymentUrl.searchParams.set('client_reference_id', `${userId}_${planId}`)
   }
 
   window.open(paymentUrl.toString(), '_blank')

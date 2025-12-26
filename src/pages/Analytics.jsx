@@ -16,6 +16,10 @@ const Analytics = () => {
   const userPlan = userData?.plan || 'free'
   const maxDays = planFeatures.limits.analyticsMaxDays || 7
   const canSeeLinkPerformance = planFeatures.limits.linkPerformance
+  const canSeeCountriesDevices = planFeatures.limits.countriesDevices
+  const canSeeAvgTime = planFeatures.limits.avgTime
+  const canSeeBounceRate = planFeatures.limits.bounceRate
+  const canSeeTrafficSources = planFeatures.limits.trafficSources
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -197,8 +201,8 @@ const Analytics = () => {
             </div>
           </div>
 
-          {/* Avg Time - Basic+ only */}
-          {userPlan !== 'free' && (
+          {/* Avg Time - Premium only */}
+          {canSeeAvgTime ? (
             <div className="stat-card">
               <div className="stat-icon time">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -211,10 +215,23 @@ const Analytics = () => {
                 <span className="stat-label">Avg. Time</span>
               </div>
             </div>
+          ) : (
+            <div className="stat-card locked">
+              <div className="stat-icon time">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">Premium</span>
+                <span className="stat-label">Avg. Time</span>
+              </div>
+            </div>
           )}
 
-          {/* Bounce Rate - Basic+ only */}
-          {userPlan !== 'free' && (
+          {/* Bounce Rate - Premium only */}
+          {canSeeBounceRate ? (
             <div className="stat-card">
               <div className="stat-icon bounce">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -226,49 +243,64 @@ const Analytics = () => {
                 <span className="stat-label">Bounce Rate</span>
               </div>
             </div>
+          ) : (
+            <div className="stat-card locked">
+              <div className="stat-icon bounce">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">Premium</span>
+                <span className="stat-label">Bounce Rate</span>
+              </div>
+            </div>
           )}
         </div>
 
-        {/* Traffic Details Grid - Basic+ only */}
-        {userPlan !== 'free' && (
+        {/* Traffic Details Grid - Pro+ for Countries/Devices, Premium for Sources */}
+        {(canSeeCountriesDevices || canSeeTrafficSources) && (
           <div className="stats-detail-grid">
-            {/* Top Sources - Basic+ */}
-            <div className="stat-detail-card card">
-              <h3>Top Sources</h3>
-              <div className="distribution-list">
-                {Object.entries(dailyData.reduce((acc, day) => {
-                  Object.entries(day.sources || {}).forEach(([source, count]) => {
-                    acc[source] = (acc[source] || 0) + count
-                  })
-                  return acc
-                }, {})).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([source, count]) => (
-                  <div key={source} className="distribution-item">
-                    <div className="dist-label">
-                      <span>{source}</span>
-                      <span>{count}</span>
+            {/* Top Sources - Premium only */}
+            {canSeeTrafficSources && (
+              <div className="stat-detail-card card">
+                <h3>Top Sources</h3>
+                <div className="distribution-list">
+                  {Object.entries(dailyData.reduce((acc, day) => {
+                    Object.entries(day.sources || {}).forEach(([source, count]) => {
+                      acc[source] = (acc[source] || 0) + count
+                    })
+                    return acc
+                  }, {})).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([source, count]) => (
+                    <div key={source} className="distribution-item">
+                      <div className="dist-label">
+                        <span>{source}</span>
+                        <span>{count}</span>
+                      </div>
+                      <div className="dist-bar-bg">
+                        <div
+                          className="dist-bar sources"
+                          style={{
+                            width: `${(count / Math.max(...Object.values(dailyData.reduce((acc, day) => {
+                              Object.entries(day.sources || {}).forEach(([s, c]) => { acc[s] = (acc[s] || 0) + c })
+                              return acc
+                            }, {})) || [1])) * 100}%`
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                    <div className="dist-bar-bg">
-                      <div
-                        className="dist-bar sources"
-                        style={{
-                          width: `${(count / Math.max(...Object.values(dailyData.reduce((acc, day) => {
-                            Object.entries(day.sources || {}).forEach(([s, c]) => { acc[s] = (acc[s] || 0) + c })
-                            return acc
-                          }, {})) || [1])) * 100}%`
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-                {Object.keys(dailyData.reduce((acc, day) => {
-                  Object.entries(day.sources || {}).forEach(([s, c]) => { acc[s] = (acc[s] || 0) + c })
-                  return acc
-                }, {})).length === 0 && <p className="empty-text">No data yet</p>}
+                  ))}
+                  {Object.keys(dailyData.reduce((acc, day) => {
+                    Object.entries(day.sources || {}).forEach(([s, c]) => { acc[s] = (acc[s] || 0) + c })
+                    return acc
+                  }, {})).length === 0 && <p className="empty-text">No data yet</p>}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Top Countries - Pro only */}
-            {userPlan === 'pro' && (
+            {/* Top Countries - Pro+ only */}
+            {canSeeCountriesDevices && (
               <div className="stat-detail-card card">
                 <h3>Top Countries</h3>
                 <div className="distribution-list">
@@ -304,40 +336,42 @@ const Analytics = () => {
               </div>
             )}
 
-            {/* Devices - Basic+ */}
-            <div className="stat-detail-card card">
-              <h3>Devices</h3>
-              <div className="distribution-list">
-                {Object.entries(dailyData.reduce((acc, day) => {
-                  Object.entries(day.devices || {}).forEach(([device, count]) => {
-                    acc[device] = (acc[device] || 0) + count
-                  })
-                  return acc
-                }, {})).sort((a, b) => b[1] - a[1]).map(([device, count]) => (
-                  <div key={device} className="distribution-item">
-                    <div className="dist-label">
-                      <span>{device}</span>
-                      <span>{count}</span>
+            {/* Devices - Pro+ only */}
+            {canSeeCountriesDevices && (
+              <div className="stat-detail-card card">
+                <h3>Devices</h3>
+                <div className="distribution-list">
+                  {Object.entries(dailyData.reduce((acc, day) => {
+                    Object.entries(day.devices || {}).forEach(([device, count]) => {
+                      acc[device] = (acc[device] || 0) + count
+                    })
+                    return acc
+                  }, {})).sort((a, b) => b[1] - a[1]).map(([device, count]) => (
+                    <div key={device} className="distribution-item">
+                      <div className="dist-label">
+                        <span>{device}</span>
+                        <span>{count}</span>
+                      </div>
+                      <div className="dist-bar-bg">
+                        <div
+                          className="dist-bar devices"
+                          style={{
+                            width: `${(count / Math.max(...Object.values(dailyData.reduce((acc, day) => {
+                              Object.entries(day.devices || {}).forEach(([s, c]) => { acc[s] = (acc[s] || 0) + c })
+                              return acc
+                            }, {})) || [1])) * 100}%`
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                    <div className="dist-bar-bg">
-                      <div
-                        className="dist-bar devices"
-                        style={{
-                          width: `${(count / Math.max(...Object.values(dailyData.reduce((acc, day) => {
-                            Object.entries(day.devices || {}).forEach(([s, c]) => { acc[s] = (acc[s] || 0) + c })
-                            return acc
-                          }, {})) || [1])) * 100}%`
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-                {Object.keys(dailyData.reduce((acc, day) => {
-                  Object.entries(day.devices || {}).forEach(([s, c]) => { acc[s] = (acc[s] || 0) + c })
-                  return acc
-                }, {})).length === 0 && <p className="empty-text">No data yet</p>}
+                  ))}
+                  {Object.keys(dailyData.reduce((acc, day) => {
+                    Object.entries(day.devices || {}).forEach(([s, c]) => { acc[s] = (acc[s] || 0) + c })
+                    return acc
+                  }, {})).length === 0 && <p className="empty-text">No data yet</p>}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
@@ -418,7 +452,7 @@ const Analytics = () => {
                 <h4>Link Performance</h4>
                 <p>See which links perform best</p>
                 <Link to="/pricing" className="btn btn-primary btn-sm">
-                  Upgrade to Basic
+                  Upgrade to Pro
                 </Link>
               </div>
             </div>

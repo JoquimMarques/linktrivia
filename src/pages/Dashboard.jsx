@@ -101,18 +101,45 @@ const Dashboard = () => {
   const portfolioInputRef = useRef(null)
   const planFeatures = getPlanFeatures(userData?.plan || 'free')
 
-  // Check for upgrade success
+  // Check for upgrade success from Stripe redirect
   useEffect(() => {
-    if (searchParams.get('upgraded') === 'true' || searchParams.get('session_id')) {
-      setShowUpgradeSuccess(true)
-      // Refresh user data to get updated plan
-      refreshUserData()
-      // Remove query params
-      setSearchParams({})
-      // Hide notification after 5 seconds
-      setTimeout(() => setShowUpgradeSuccess(false), 5000)
+    const upgradedPlan = searchParams.get('upgraded')
+    const sessionId = searchParams.get('session_id')
+
+    const processUpgrade = async () => {
+      if (upgradedPlan && ['basic', 'pro', 'premium'].includes(upgradedPlan)) {
+        // Update user plan in Firestore
+        try {
+          await updateDoc(doc(db, 'users', user.uid), {
+            plan: upgradedPlan,
+            planUpdatedAt: serverTimestamp()
+          })
+          console.log(`Plan updated to: ${upgradedPlan}`)
+        } catch (error) {
+          console.error('Error updating plan:', error)
+        }
+
+        // Show success notification
+        setShowUpgradeSuccess(true)
+        // Refresh user data to get updated plan
+        await refreshUserData()
+        // Remove query params
+        setSearchParams({})
+        // Hide notification after 5 seconds
+        setTimeout(() => setShowUpgradeSuccess(false), 5000)
+      } else if (upgradedPlan === 'true' || sessionId) {
+        // Legacy support
+        setShowUpgradeSuccess(true)
+        refreshUserData()
+        setSearchParams({})
+        setTimeout(() => setShowUpgradeSuccess(false), 5000)
+      }
     }
-  }, [searchParams, setSearchParams, refreshUserData])
+
+    if (user?.uid) {
+      processUpgrade()
+    }
+  }, [searchParams, setSearchParams, refreshUserData, user])
 
   useEffect(() => {
     if (userData) {
@@ -212,8 +239,32 @@ const Dashboard = () => {
     }
   }
 
+  // Check if user can change username based on plan limits
+  const canChangeUsername = () => {
+    const limit = planFeatures.limits.usernameChangesLimit || 2
+
+    // Unlimited for Pro and Premium
+    if (limit === Infinity) {
+      return { allowed: true, remaining: Infinity }
+    }
+
+    const now = new Date()
+    const currentMonth = `${now.getFullYear()}-${now.getMonth()}`
+    const usernameChanges = userData?.usernameChanges || {}
+    const monthlyChanges = usernameChanges[currentMonth] || 0
+    const remaining = limit - monthlyChanges
+
+    return { allowed: remaining > 0, remaining: Math.max(0, remaining) }
+  }
+
   // Username editing handlers
   const handleEditUsername = () => {
+    const { allowed, remaining } = canChangeUsername()
+    const limit = planFeatures.limits.usernameChangesLimit || 2
+    if (!allowed) {
+      setUsernameError(`You've reached the limit of ${limit} username changes this month. Upgrade for more.`)
+      return
+    }
     setNewUsername(username)
     setEditingUsername(true)
     setUsernameError('')
@@ -259,10 +310,32 @@ const Dashboard = () => {
   const handleSaveUsername = async () => {
     if (!usernameAvailable || newUsername.length < 3) return
 
+    // Check limit again before saving
+    const { allowed } = canChangeUsername()
+    const limit = planFeatures.limits.usernameChangesLimit || 2
+    if (!allowed) {
+      setUsernameError(`Monthly limit of ${limit} reached. Upgrade your plan for more.`)
+      return
+    }
+
     setSavingUsername(true)
     const { success, error } = await updateUsername(user.uid, username, newUsername)
 
     if (success) {
+      // Track username change for plans with limits (not unlimited)
+      if (limit !== Infinity) {
+        const now = new Date()
+        const currentMonth = `${now.getFullYear()}-${now.getMonth()}`
+        const usernameChanges = userData?.usernameChanges || {}
+        const monthlyChanges = usernameChanges[currentMonth] || 0
+
+        await updateDoc(doc(db, 'users', user.uid), {
+          usernameChanges: {
+            ...usernameChanges,
+            [currentMonth]: monthlyChanges + 1
+          }
+        })
+      }
       await refreshUserData()
       setEditingUsername(false)
       setNewUsername('')
@@ -361,7 +434,7 @@ const Dashboard = () => {
     if (!newLink.title || !newLink.url) return
 
     if (links.length >= planFeatures.limits.maxLinks) {
-      alert(`You have reached the maximum links limit for your plan. Upgrade to Pro for unlimited links!`)
+      alert(`You have reached the maximum of ${planFeatures.limits.maxLinks} links for your plan. Upgrade to Basic for unlimited links!`)
       return
     }
 
@@ -789,7 +862,14 @@ const Dashboard = () => {
                             </button>
                           </div>
                         )}
-                        <span className="input-hint">linkrole.net/{username}</span>
+                        <span className="input-hint">
+                          linkrole.net/{username}
+                          {(planFeatures.limits.usernameChangesLimit !== Infinity) && (
+                            <span className="username-limit-hint">
+                              {' • '}{canChangeUsername().remaining} change{canChangeUsername().remaining !== 1 ? 's' : ''} remaining this month
+                            </span>
+                          )}
+                        </span>
                       </div>
 
                       <div className="input-group">
@@ -1053,20 +1133,28 @@ const Dashboard = () => {
                   Scan this code to access your page or download it to share
                 </p>
 
-                <div className="qrcode-type-toggle">
-                  <button
-                    className={`toggle-btn ${qrType === 'standard' ? 'active' : ''}`}
-                    onClick={() => setQrType('standard')}
-                  >
-                    Standard
-                  </button>
-                  <button
-                    className={`toggle-btn ${qrType === 'custom' ? 'active' : ''}`}
-                    onClick={() => setQrType('custom')}
-                  >
-                    Customized
-                  </button>
-                </div>
+                {/* QR Code Toggle - Custom only for paid plans */}
+                {(userData?.plan && userData.plan !== 'free') ? (
+                  <div className="qrcode-type-toggle">
+                    <button
+                      className={`toggle-btn ${qrType === 'standard' ? 'active' : ''}`}
+                      onClick={() => setQrType('standard')}
+                    >
+                      Standard
+                    </button>
+                    <button
+                      className={`toggle-btn ${qrType === 'custom' ? 'active' : ''}`}
+                      onClick={() => setQrType('custom')}
+                    >
+                      Customized
+                    </button>
+                  </div>
+                ) : (
+                  <div className="qrcode-free-notice">
+                    <p>🔒 Custom QR Code is available on paid plans</p>
+                    <Link to="/pricing" className="btn btn-ghost btn-sm">Upgrade Now</Link>
+                  </div>
+                )}
 
                 <div className="qrcode-container">
                   <div className="qrcode-preview">
@@ -1074,9 +1162,9 @@ const Dashboard = () => {
                       id="dashboard-qrcode"
                       value={`${window.location.origin}/${userData?.username}`}
                       size={200}
-                      userPhoto={qrType === 'custom' ? userData?.photoURL : null}
-                      primaryColor={qrType === 'custom' ? (userData?.plan && userData.plan !== 'free' ? (userData?.portfolioColor || '#0ea5e9') : '#000000') : '#000000'}
-                      qrType={qrType}
+                      userPhoto={(userData?.plan && userData.plan !== 'free' && qrType === 'custom') ? userData?.photoURL : null}
+                      primaryColor={(userData?.plan && userData.plan !== 'free' && qrType === 'custom') ? (userData?.portfolioColor || '#0ea5e9') : '#000000'}
+                      qrType={(userData?.plan && userData.plan !== 'free') ? qrType : 'standard'}
                     />
                   </div>
 

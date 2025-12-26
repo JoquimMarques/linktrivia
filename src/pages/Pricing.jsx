@@ -1,12 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { PLANS, redirectToPayment } from '../services/payments'
-import QRCodeCustom from '../components/QRCodeCustom'
 import './Pricing.css'
 
 const Pricing = () => {
   const { isAuthenticated, user, userData } = useAuth()
+  const [expandedFaq, setExpandedFaq] = useState(null)
 
   // Check for successful payment redirect
   useEffect(() => {
@@ -15,29 +15,73 @@ const Pricing = () => {
     const txRef = urlParams.get('tx_ref')
 
     if (status === 'successful' || status === 'completed' || txRef) {
-      // Show success message and redirect to dashboard
       setTimeout(() => {
         window.location.href = '/dashboard?upgraded=true'
       }, 1500)
     }
   }, [])
 
+  // Plans with features that match the system limits
   const plans = [
     {
       ...PLANS.free,
-      cta: 'Start for Free'
+      cta: 'Start for Free',
+      displayFeatures: [
+        { text: '5 links', included: true },
+        { text: 'Basic QR Code', included: true },
+        { text: 'Smart Stats (7 days)', included: true },
+        { text: 'Total clicks & views', included: true },
+        { text: '2 username changes/month', included: true },
+        { text: 'Linktrivia Branding', included: true, note: 'visible' },
+        { text: 'Unlimited links', included: false },
+        { text: 'Custom QR Code', included: false },
+        { text: 'Custom Themes', included: false },
+        { text: 'Remove Branding', included: false }
+      ]
     },
     {
       ...PLANS.basic,
-      cta: 'Subscribe Basic'
+      cta: 'Subscribe Basic',
+      displayFeatures: [
+        { text: 'Unlimited links', included: true },
+        { text: 'Custom QR Code', included: true },
+        { text: 'Smart Stats (14 days)', included: true },
+        { text: 'Total clicks & views', included: true },
+        { text: '10 username changes/month', included: true },
+        { text: 'Avg. Time on Page', included: false },
+        { text: 'Bounce Rate', included: false },
+        { text: 'Traffic Sources', included: false },
+        { text: 'Remove Branding', included: false }
+      ]
     },
     {
       ...PLANS.pro,
-      cta: 'Subscribe Pro'
+      cta: 'Subscribe Pro',
+      displayFeatures: [
+        { text: 'Unlimited links', included: true },
+        { text: 'Custom QR Code', included: true },
+        { text: 'Smart Stats (30 days)', included: true },
+        { text: 'Remove Branding', included: true },
+        { text: 'Link Performance', included: true },
+        { text: 'Countries & Devices', included: true },
+        { text: 'Unlimited username changes', included: true },
+        { text: 'Avg. Time on Page', included: false },
+        { text: 'Bounce Rate', included: false },
+        { text: 'Traffic Sources', included: false }
+      ]
     },
     {
       ...PLANS.premium,
-      cta: 'Subscribe Premium'
+      cta: 'Subscribe Premium',
+      displayFeatures: [
+        { text: 'Everything in Pro', included: true },
+        { text: 'Unlimited Analytics History', included: true },
+        { text: 'Traffic Sources', included: true },
+        { text: 'Avg. Time on Page', included: true },
+        { text: 'Bounce Rate', included: true },
+        { text: 'Priority Support', included: true },
+        { text: 'Early Access to Features', included: true }
+      ]
     }
   ]
 
@@ -48,24 +92,41 @@ const Pricing = () => {
     },
     {
       question: 'What payment methods do you accept?',
-      answer: 'We accept credit/debit cards, bank transfers, mobile money, and other local methods through Flutterwave, our secure payment processor.'
+      answer: 'We accept credit/debit cards, bank transfers, mobile money, and other local methods through our secure payment processor.'
     },
     {
-      question: 'Is there a trial period?',
-      answer: 'Our Free plan is free forever! You can also try out paid features with a 7-day money-back guarantee.'
+      question: 'What happens when my subscription expires?',
+      answer: 'Your account will automatically downgrade to the Free plan (5 links max). You will retain your links, but advanced features like custom QR codes and themes will become unavailable.'
     },
     {
-      question: 'Can I cancel at any time?',
-      answer: 'Absolutely. You can cancel your subscription at any time through your dashboard. Your access will continue until the end of the billing period.'
+      question: 'What is the difference between the plans?',
+      answer: 'Free: 5 links, basic stats. Basic: Unlimited links, custom QR, 14 days stats. Pro: Custom themes, remove branding, link performance, countries & devices. Premium: Full analytics with Avg. Time, Bounce Rate, Traffic Sources, and priority support.'
     },
     {
-      question: 'How does billing work?',
-      answer: 'Basic is billed weekly, Pro monthly, and Premium annually. All billings are automatic and you can cancel whenever you want.'
+      question: 'Can I get a refund?',
+      answer: 'We offer a 7-day money-back guarantee for all paid plans. If you are not satisfied, contact our support team within 7 days of purchase for a full refund.'
     },
     {
-      question: 'Are payments secure?',
-      answer: 'Yes! We use Flutterwave, one of the most secure payment platforms in Africa. Your payment data never passes through our servers.'
+      question: 'What is Link Performance?',
+      answer: 'Link Performance shows you detailed analytics for each individual link, including click trends over time and geographic distribution. This feature is available on Pro and Premium plans.'
     }
+  ]
+
+  // Features comparison table data
+  const comparisonFeatures = [
+    { name: 'Links', free: '5', basic: 'Unlimited', pro: 'Unlimited', premium: 'Unlimited' },
+    { name: 'QR Code', free: 'Basic', basic: 'Custom', pro: 'Custom', premium: 'Custom' },
+    { name: 'Analytics Period', free: '7 days', basic: '14 days', pro: '30 days', premium: 'Unlimited' },
+    { name: 'Total Clicks & Views', free: true, basic: true, pro: true, premium: true },
+    { name: 'Countries & Devices', free: false, basic: false, pro: true, premium: true },
+    { name: 'Link Performance', free: false, basic: false, pro: true, premium: true },
+    { name: 'Avg. Time on Page', free: false, basic: false, pro: false, premium: true },
+    { name: 'Bounce Rate', free: false, basic: false, pro: false, premium: true },
+    { name: 'Traffic Sources', free: false, basic: false, pro: false, premium: true },
+    { name: 'Custom Themes', free: false, basic: false, pro: true, premium: true },
+    { name: 'Remove Branding', free: false, basic: false, pro: true, premium: true },
+    { name: 'Priority Support', free: false, basic: false, pro: false, premium: true },
+    { name: 'Username Changes/Month', free: '2', basic: '10', pro: 'Unlimited', premium: 'Unlimited' }
   ]
 
   const isCurrentPlan = (planId) => userData?.plan === planId
@@ -75,12 +136,10 @@ const Pricing = () => {
       window.location.href = '/register'
       return
     }
-
     if (!isAuthenticated) {
       window.location.href = '/register'
       return
     }
-
     redirectToPayment(planId, user?.email, user?.uid)
   }
 
@@ -91,6 +150,20 @@ const Pricing = () => {
     return plan.cta
   }
 
+  const toggleFaq = (index) => {
+    setExpandedFaq(expandedFaq === index ? null : index)
+  }
+
+  const renderFeatureValue = (value) => {
+    if (value === true) {
+      return <span className="feature-check">✓</span>
+    }
+    if (value === false) {
+      return <span className="feature-cross">✗</span>
+    }
+    return <span className="feature-text">{value}</span>
+  }
+
   return (
     <div className="pricing-page">
       <div className="container">
@@ -98,7 +171,6 @@ const Pricing = () => {
         <div className="pricing-header">
           <h1>Choose Your Plan</h1>
           <p>Start for free and upgrade when you need. Cancel anytime.</p>
-
           {userData?.plan && userData.plan !== 'free' && (
             <div className="current-plan-badge">
               ✨ Your current plan: <strong>{PLANS[userData.plan]?.name || userData.plan}</strong>
@@ -115,7 +187,6 @@ const Pricing = () => {
             >
               {plan.popular && <span className="popular-badge">Most Popular</span>}
               {plan.savings && <span className="savings-badge">{plan.savings}</span>}
-
               <div className="plan-header">
                 <h3>{plan.name}</h3>
                 <div className="plan-interval">{plan.intervalLabel}</div>
@@ -124,18 +195,23 @@ const Pricing = () => {
                   <span className="amount">{plan.price.toFixed(2).replace('.', ',')}</span>
                 </div>
               </div>
-
               <ul className="plan-features">
-                {plan.features.map((feature, index) => (
-                  <li key={index}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    {feature}
+                {plan.displayFeatures.map((feature, index) => (
+                  <li key={index} className={feature.included ? 'included' : 'excluded'}>
+                    {feature.included ? (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    ) : (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="cross-icon">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                    )}
+                    {feature.text}
                   </li>
                 ))}
               </ul>
-
               {isAuthenticated ? (
                 <button
                   className={`btn plan-btn ${plan.id}-btn ${isCurrentPlan(plan.id) ? 'current-btn' : ''}`}
@@ -156,140 +232,80 @@ const Pricing = () => {
           ))}
         </div>
 
+        {/* Stripe Pricing Table */}
+        <div className="stripe-pricing-table-wrapper" style={{ margin: '60px 0 80px', textAlign: 'center' }}>
+          <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+          <stripe-pricing-table
+            pricing-table-id="prctbl_1SiWucLySWxQOvNVTEnZCEXu"
+            publishable-key="pk_live_51SfMHfLySWxQOvNVgYfrgjn10ZHIT6Qnre0PWHpe8rGkf4ECEcqiF5Ofgt2UWno5b1PaIuuHe8Sq7L223Xfj0tEp00BpylTF5I"
+          >
+          </stripe-pricing-table>
+        </div>
+
         {!isAuthenticated && (
           <div className="login-cta">
             <p>Already have an account? <Link to="/login">Log in</Link> to subscribe to a plan.</p>
           </div>
         )}
 
-        {/* QR Code Feature Highlight */}
-        <div className="qrcode-feature-highlight">
-          <div className="qrcode-highlight-content">
-            <div className="qrcode-highlight-text">
-              <span className="badge">Prime Feature</span>
-              <h2>Beautiful & Professional QR Codes</h2>
-              <p>
-                Stand out with customized QR codes. Pro and Premium users can customize colors, add their profile photo to the center, and download high-resolution files.
-              </p>
-              <ul className="highlight-list">
-                <li>✨ Custom branding colors</li>
-                <li>🖼️ Centered profile photo</li>
-                <li>🚀 High-resolution SVG & PNG</li>
-                <li>📱 Perfect for business cards & prints</li>
-              </ul>
-              <button
-                className="btn btn-primary btn-lg"
-                onClick={() => handleSubscribe('pro')}
-              >
-                Get Custom QR Code
-              </button>
-            </div>
-            <div className="qrcode-highlight-preview">
-              <div className="premium-qr-display">
-                <QRCodeCustom
-                  value="https://linkrole.net/demo"
-                  size={240}
-                  userPhoto="https://api.dicebear.com/7.x/avataaars/svg?seed=LinkRole"
-                  primaryColor="#0ea5e9"
-                />
-                <div className="preview-label">Live Preview</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Features Comparison */}
+        {/* Features Comparison Table */}
         <div className="features-section">
-          <h2>Compare Plans</h2>
-          <div className="features-table four-cols">
-            <div className="table-header">
-              <div className="feature-name"></div>
-              <div className="plan-col">Free</div>
-              <div className="plan-col">Basic</div>
-              <div className="plan-col highlight pro">Pro ⭐</div>
-              <div className="plan-col">Premium</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">Billing</div>
-              <div className="plan-col">—</div>
-              <div className="plan-col">Weekly</div>
-              <div className="plan-col highlight pro">Monthly</div>
-              <div className="plan-col">Annual</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">Links</div>
-              <div className="plan-col">Unlimited</div>
-              <div className="plan-col">Unlimited</div>
-              <div className="plan-col highlight pro">Unlimited</div>
-              <div className="plan-col">Unlimited</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">QR Code</div>
-              <div className="plan-col">Basic</div>
-              <div className="plan-col">✓</div>
-              <div className="plan-col highlight pro">Custom</div>
-              <div className="plan-col">Custom</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">Analytics History</div>
-              <div className="plan-col">7 days</div>
-              <div className="plan-col">14 days</div>
-              <div className="plan-col highlight pro">30 days</div>
-              <div className="plan-col">Unlimited</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">Link Performance</div>
-              <div className="plan-col">❌</div>
-              <div className="plan-col">✓</div>
-              <div className="plan-col highlight pro">✓</div>
-              <div className="plan-col">✓</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">Custom Themes</div>
-              <div className="plan-col">❌</div>
-              <div className="plan-col">❌</div>
-              <div className="plan-col highlight pro">✓</div>
-              <div className="plan-col">✓</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">Remove LinkRole Branding</div>
-              <div className="plan-col">❌</div>
-              <div className="plan-col">❌</div>
-              <div className="plan-col highlight pro">✓</div>
-              <div className="plan-col">✓</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">Custom Domain</div>
-              <div className="plan-col">❌</div>
-              <div className="plan-col">❌</div>
-              <div className="plan-col highlight pro">❌</div>
-              <div className="plan-col">✓</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">API Access</div>
-              <div className="plan-col">❌</div>
-              <div className="plan-col">❌</div>
-              <div className="plan-col highlight pro">❌</div>
-              <div className="plan-col">✓</div>
-            </div>
-            <div className="table-row">
-              <div className="feature-name">Support</div>
-              <div className="plan-col">Community</div>
-              <div className="plan-col">Email</div>
-              <div className="plan-col highlight pro">Priority</div>
-              <div className="plan-col">24/7 Dedicated</div>
-            </div>
+          <h2>Compare All Features</h2>
+          <div className="comparison-table-wrapper">
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Free</th>
+                  <th>Basic</th>
+                  <th className="highlight">Pro</th>
+                  <th>Premium</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonFeatures.map((feature, index) => (
+                  <tr key={index}>
+                    <td className="feature-name">{feature.name}</td>
+                    <td>{renderFeatureValue(feature.free)}</td>
+                    <td>{renderFeatureValue(feature.basic)}</td>
+                    <td className="highlight">{renderFeatureValue(feature.pro)}</td>
+                    <td>{renderFeatureValue(feature.premium)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
         {/* FAQs */}
         <div className="faq-section">
           <h2>Frequently Asked Questions</h2>
-          <div className="faq-grid">
+          <div className="faq-list">
             {faqs.map((faq, index) => (
-              <div key={index} className="faq-item card">
-                <h4>{faq.question}</h4>
-                <p>{faq.answer}</p>
+              <div
+                key={index}
+                className={`faq-item ${expandedFaq === index ? 'expanded' : ''}`}
+                onClick={() => toggleFaq(index)}
+              >
+                <div className="faq-question">
+                  <span>{faq.question}</span>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className={`faq-arrow ${expandedFaq === index ? 'rotated' : ''}`}
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </div>
+                {expandedFaq === index && (
+                  <div className="faq-answer">
+                    <p>{faq.answer}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -297,11 +313,17 @@ const Pricing = () => {
 
         {/* CTA */}
         <div className="pricing-cta">
-          <h2>Still have questions?</h2>
-          <p>Contact our team for personalized help</p>
-          <a href="mailto:support@linkrole.net" className="btn btn-secondary btn-lg">
-            Contact Support
-          </a>
+          <h2>Ready to grow your links?</h2>
+          <p>Join thousands of creators and businesses using LinkRole to manage their online presence.</p>
+          {!isAuthenticated ? (
+            <Link to="/register" className="btn btn-primary btn-lg">
+              Get Started Free
+            </Link>
+          ) : (
+            <Link to="/dashboard" className="btn btn-primary btn-lg">
+              Go to Dashboard
+            </Link>
+          )}
         </div>
       </div>
     </div>
