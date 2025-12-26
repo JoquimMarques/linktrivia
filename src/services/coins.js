@@ -11,7 +11,7 @@ export const COIN_PACKAGES = {
         currency: '€',
         discount: null,
         highlight: 'Para testar o sistema',
-        paymentLink: '' // Will be set after creating Stripe links
+        paymentLink: 'https://buy.stripe.com/test_8x29AU70T46K60y8bmaR203'
     },
     popular: {
         id: 'popular',
@@ -22,7 +22,7 @@ export const COIN_PACKAGES = {
         discount: '20% off',
         highlight: '🏆 Mais Vendido',
         badge: 'popular',
-        paymentLink: ''
+        paymentLink: 'https://buy.stripe.com/test_14A6oIdph1YC60ydvGaR204'
     },
     bestValue: {
         id: 'bestValue',
@@ -33,7 +33,7 @@ export const COIN_PACKAGES = {
         discount: '30% off',
         highlight: '💎 Melhor Custo-Benefício',
         badge: 'best',
-        paymentLink: ''
+        paymentLink: 'https://buy.stripe.com/test_4gM7sMbh9gTw4WuajuaR205'
     },
     mega: {
         id: 'mega',
@@ -43,7 +43,7 @@ export const COIN_PACKAGES = {
         currency: '€',
         discount: '35% off',
         highlight: 'Para usuários avançados',
-        paymentLink: ''
+        paymentLink: 'https://buy.stripe.com/test_4gM00kcld7iW1KicrCaR206'
     }
 }
 

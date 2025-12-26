@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import {
     COIN_PACKAGES,
@@ -7,18 +7,44 @@ import {
     purchaseItem,
     getCoinBalance,
     hasItemPurchased,
-    redirectToCoinPurchase
+    redirectToCoinPurchase,
+    addCoins
 } from '../services/coins'
 import './Store.css'
 
 const Store = () => {
     const { user, userData, refreshUserData } = useAuth()
+    const [searchParams, setSearchParams] = useSearchParams()
     const [purchasing, setPurchasing] = useState(null)
     const [showSuccess, setShowSuccess] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
 
     const coinBalance = getCoinBalance(userData)
     const isAuthenticated = !!user
+
+    // Handle coin purchase redirect from Stripe
+    useEffect(() => {
+        const coinsParam = searchParams.get('coins')
+
+        const processCoinPurchase = async () => {
+            if (coinsParam && user?.uid) {
+                const coinsAmount = parseInt(coinsParam, 10)
+                if (coinsAmount > 0) {
+                    const result = await addCoins(user.uid, coinsAmount)
+                    if (result.success) {
+                        setSuccessMessage(`🪙 ${coinsAmount} moedas adicionadas à sua conta!`)
+                        setShowSuccess(true)
+                        await refreshUserData()
+                        setTimeout(() => setShowSuccess(false), 5000)
+                    }
+                    // Remove query params
+                    setSearchParams({})
+                }
+            }
+        }
+
+        processCoinPurchase()
+    }, [searchParams, setSearchParams, user, refreshUserData])
 
     const handleBuyCoins = (packageId) => {
         if (!isAuthenticated) return
