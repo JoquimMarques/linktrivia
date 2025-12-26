@@ -47,6 +47,15 @@ const Navbar = () => {
               >
                 Analytics
               </Link>
+              <Link
+                to="/store"
+                className={`nav-link store-link ${isActive('/store') ? 'active' : ''}`}
+              >
+                🏪 Store
+                {userData?.coins > 0 && (
+                  <span className="coin-badge">🪙 {userData.coins}</span>
+                )}
+              </Link>
               <div className="nav-user">
                 <Link to={`/${userData?.username || ''}`} className="nav-avatar">
                   {userData?.photoURL ? (
@@ -115,6 +124,13 @@ const Navbar = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               Analytics
+            </Link>
+            <Link
+              to="/store"
+              className="mobile-link"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              🏪 Store {userData?.coins > 0 && `(🪙 ${userData.coins})`}
             </Link>
             <Link
               to={`/${userData?.username || ''}`}
