@@ -183,7 +183,8 @@ export const redirectToPayment = (planId, userEmail, userId) => {
     paymentUrl.searchParams.set('client_reference_id', `${userId}_${planId}`)
   }
 
-  window.open(paymentUrl.toString(), '_blank')
+  // Redirect to Stripe checkout (same window, not new tab)
+  window.location.href = paymentUrl.toString()
 }
 
 // Update user plan (called by webhook)
