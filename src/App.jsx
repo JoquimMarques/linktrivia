@@ -7,7 +7,6 @@ import Dashboard from './pages/Dashboard'
 import Pricing from './pages/Pricing'
 import Profile from './pages/Profile'
 import Analytics from './pages/Analytics'
-import Store from './pages/Store'
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {
@@ -19,8 +18,7 @@ function App() {
     location.pathname !== '/register' &&
     location.pathname !== '/dashboard' &&
     location.pathname !== '/pricing' &&
-    location.pathname !== '/analytics' &&
-    location.pathname !== '/store'
+    location.pathname !== '/analytics'
 
   return (
     <div className="app">
@@ -33,7 +31,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/pricing" element={<Pricing />} />
-          <Route path="/store" element={<Store />} />
           <Route
             path="/dashboard"
             element={

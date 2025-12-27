@@ -28,6 +28,7 @@ const Pricing = () => {
       cta: 'Start for Free',
       displayFeatures: [
         { text: '5 links', included: true },
+        { text: '3 Basic Themes', included: true },
         { text: 'Basic QR Code', included: true },
         { text: 'Smart Stats (7 days)', included: true },
         { text: 'Total clicks & views', included: true },
@@ -35,7 +36,7 @@ const Pricing = () => {
         { text: 'Linktrivia Branding', included: true, note: 'visible' },
         { text: 'Unlimited links', included: false },
         { text: 'Custom QR Code', included: false },
-        { text: 'Custom Themes', included: false },
+        { text: 'Premium Themes', included: false },
         { text: 'Remove Branding', included: false }
       ]
     },
@@ -44,13 +45,12 @@ const Pricing = () => {
       cta: 'Subscribe Basic',
       displayFeatures: [
         { text: 'Unlimited links', included: true },
+        { text: '6 Themes (+ Elegant, Tech, Aurora)', included: true },
         { text: 'Custom QR Code', included: true },
         { text: 'Smart Stats (14 days)', included: true },
         { text: 'Total clicks & views', included: true },
         { text: '10 username changes/month', included: true },
-        { text: 'Avg. Time on Page', included: false },
-        { text: 'Bounce Rate', included: false },
-        { text: 'Traffic Sources', included: false },
+        { text: 'Premium Themes', included: false },
         { text: 'Remove Branding', included: false }
       ]
     },
@@ -59,15 +59,13 @@ const Pricing = () => {
       cta: 'Subscribe Pro',
       displayFeatures: [
         { text: 'Unlimited links', included: true },
+        { text: 'All 9 Themes (+ Portfolio, Orbit, Modern)', included: true },
         { text: 'Custom QR Code', included: true },
         { text: 'Smart Stats (30 days)', included: true },
         { text: 'Remove Branding', included: true },
         { text: 'Link Performance', included: true },
         { text: 'Countries & Devices', included: true },
-        { text: 'Unlimited username changes', included: true },
-        { text: 'Avg. Time on Page', included: false },
-        { text: 'Bounce Rate', included: false },
-        { text: 'Traffic Sources', included: false }
+        { text: 'Unlimited username changes', included: true }
       ]
     },
     {
@@ -116,6 +114,7 @@ const Pricing = () => {
   // Features comparison table data
   const comparisonFeatures = [
     { name: 'Links', free: '5', basic: 'Unlimited', pro: 'Unlimited', premium: 'Unlimited' },
+    { name: 'Themes Available', free: '3 Basic', basic: '6 Themes', pro: 'All 9', premium: 'All 9' },
     { name: 'QR Code', free: 'Basic', basic: 'Custom', pro: 'Custom', premium: 'Custom' },
     { name: 'Analytics Period', free: '7 days', basic: '14 days', pro: '30 days', premium: 'Unlimited' },
     { name: 'Total Clicks & Views', free: true, basic: true, pro: true, premium: true },
@@ -124,7 +123,6 @@ const Pricing = () => {
     { name: 'Avg. Time on Page', free: false, basic: false, pro: false, premium: true },
     { name: 'Bounce Rate', free: false, basic: false, pro: false, premium: true },
     { name: 'Traffic Sources', free: false, basic: false, pro: false, premium: true },
-    { name: 'Custom Themes', free: false, basic: false, pro: true, premium: true },
     { name: 'Remove Branding', free: false, basic: false, pro: true, premium: true },
     { name: 'Priority Support', free: false, basic: false, pro: false, premium: true },
     { name: 'Username Changes/Month', free: '2', basic: '10', pro: 'Unlimited', premium: 'Unlimited' }
@@ -234,14 +232,14 @@ const Pricing = () => {
         </div>
 
         {/* Stripe Pricing Table */}
-        <div className="stripe-pricing-table-wrapper" style={{ margin: '60px 0 80px', textAlign: 'center' }}>
+        {/* <div className="stripe-pricing-table-wrapper" style={{ margin: '60px 0 80px', textAlign: 'center' }}>
           <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
           <stripe-pricing-table
             pricing-table-id="prctbl_1SiWucLySWxQOvNVTEnZCEXu"
             publishable-key="pk_live_51SfMHfLySWxQOvNVgYfrgjn10ZHIT6Qnre0PWHpe8rGkf4ECEcqiF5Ofgt2UWno5b1PaIuuHe8Sq7L223Xfj0tEp00BpylTF5I"
           >
           </stripe-pricing-table>
-        </div>
+        </div> */}
 
         {!isAuthenticated && (
           <div className="login-cta">
@@ -315,7 +313,7 @@ const Pricing = () => {
         {/* CTA */}
         <div className="pricing-cta">
           <h2>Ready to grow your links?</h2>
-          <p>Join thousands of creators and businesses using LinkRole to manage their online presence.</p>
+          <p>Join thousands of creators and businesses using LinkTrivia to manage their online presence.</p>
           {!isAuthenticated ? (
             <Link to="/register" className="btn btn-primary btn-lg">
               Get Started Free

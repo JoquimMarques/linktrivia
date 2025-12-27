@@ -1,51 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-   <!-- Favicon / App Icon -->
-   <!-- Favicon / App Icon -->
-<link rel="icon" type="image/png" sizes="32x32" href="./src/assets/favicon-package 2/favicon-32x32.png  ">
-<link rel="icon" type="image/png" sizes="16x16" href="./src/assets/favicon-package 2/favicon-16x16.png">
-<link rel="apple-touch-icon" href="./src/assets/favicon-package 2/apple-touch-icon.png">
-<link rel="manifest" href="./src/assets/favicon-package 2/site.webmanifest">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- SEO Meta Tags -->
-    <title>Linktrivia</title>
-    <meta name="description" content="Create a beautiful and customizable page that gathers all your important links. Share your content, products, and social networks with a single link." />
-    <meta name="keywords" content="link in bio, linktree alternative, social links, bio link, links page" />
-    <meta name="author" content="Linktrivia" />
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Linktrivia - One Link to Rule Them All" />
-    <meta property="og:description" content="Create a beautiful and customizable page that gathers all your important links." />
-    <meta property="og:url" content="https://linktrivia.com" />
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Linktrivia - One Link to Rule Them All" />
-    <meta name="twitter:description" content="Create a beautiful and customizable page that gathers all your important links." />
-    
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#0a0a0b" />
-    
-    <!-- Preconnect to Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
-    <!-- Elegant Font for Elegante Theme -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    
-    <!-- Tech Font for Tech Theme -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    
-    <!-- Flutterwave -->
-    <script src="https://checkout.flutterwave.com/v3.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Favicon / App Icon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./src/assets/favicon-package 2/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./src/assets/favicon-package 2/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="./src/assets/favicon-package 2/apple-touch-icon.png">
+  <link rel="manifest" href="./src/assets/favicon-package 2/site.webmanifest">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO Meta Tags -->
+  <title>LinkTrivia - Link in Bio Tool | Best Free Linktree Alternative</title>
+  <meta name="description"
+    content="LinkTrivia is the best free link in bio tool and Linktree alternative. Create a beautiful, customizable page with all your important links. Share your social media, content, products with one link. Better than linktree, linktr.ee, bio link tools." />
+  <meta name="keywords"
+    content="linktrivia, link trivia, linktr, linktree, linktree alternative, linktree free, link in bio, bio link, link bio, instagram bio link, tiktok bio link, all links in one, social media links, link page, one link, multi link, bio page, creator links, influencer links, linktr.ee alternative, free linktree, melhor que linktree, alternativa linktree" />
+  <meta name="author" content="LinkTrivia" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://linktrivia.com" />
+
+  <!-- Additional SEO Meta Tags -->
+  <meta name="subject" content="Link in Bio Tool" />
+  <meta name="copyright" content="LinkTrivia" />
+  <meta name="language" content="EN" />
+  <meta name="rating" content="General" />
+  <meta name="distribution" content="Global" />
+  <meta name="revisit-after" content="7 days" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="LinkTrivia" />
+  <meta property="og:title" content="LinkTrivia - The Best Free Link in Bio Tool | Linktree Alternative" />
+  <meta property="og:description"
+    content="Create a stunning bio link page in seconds. The best free alternative to Linktree. Share all your links with one beautiful page. Join thousands of creators using LinkTrivia!" />
+  <meta property="og:url" content="https://linktrivia.com" />
+  <meta property="og:image" content="https://linktrivia.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@linktrivia" />
+  <meta name="twitter:creator" content="@linktrivia" />
+  <meta name="twitter:title" content="LinkTrivia - The Best Free Link in Bio Tool" />
+  <meta name="twitter:description"
+    content="Create a stunning bio link page. The best free Linktree alternative. Share all your links with one beautiful page!" />
+  <meta name="twitter:image" content="https://linktrivia.com/og-image.png" />
+
+  <!-- Schema.org Structured Data for SEO -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "LinkTrivia",
+      "alternateName": ["Link Trivia", "Linktrivia", "LinkTrivia Bio"],
+      "url": "https://linktrivia.com",
+      "description": "LinkTrivia is a free link in bio tool and the best Linktree alternative. Create beautiful, customizable landing pages to share all your important links in one place.",
+      "applicationCategory": "SocialNetworkingApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "1250"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "LinkTrivia",
+        "url": "https://linktrivia.com"
+      },
+      "keywords": "link in bio, linktree alternative, bio link, linktr, social links, creator tools"
+    }
+    </script>
+
+  <!-- Organization Schema -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LinkTrivia",
+      "url": "https://linktrivia.com",
+      "logo": "https://linktrivia.com/logo.png",
+      "sameAs": [
+        "https://twitter.com/linktrivia",
+        "https://instagram.com/linktrivia",
+        "https://facebook.com/linktrivia"
+      ],
+      "description": "LinkTrivia - The best free link in bio tool and Linktree alternative for creators, influencers, and businesses."
+    }
+    </script>
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#0a0a0b" />
+  <meta name="msapplication-TileColor" content="#0a0a0b" />
+
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Elegant Font for Elegante Theme -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tech Font for Tech Theme -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Flutterwave -->
+  <script src="https://checkout.flutterwave.com/v3.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

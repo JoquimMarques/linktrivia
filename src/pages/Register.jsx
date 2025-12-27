@@ -80,7 +80,7 @@ const Register = () => {
             <div className="input-group">
               <label className="input-label">Username</label>
               <div className="input-wrapper">
-                <span className="input-prefix">linkrole.net/</span>
+                <span className="input-prefix">linktrivia.com/</span>
                 <input
                   type="text"
                   className={`input input-with-prefix ${usernameStatus ? `input-${usernameStatus}` : ''}`}

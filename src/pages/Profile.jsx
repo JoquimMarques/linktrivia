@@ -4,6 +4,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../services/firebase'
 import { trackProfileView, trackLinkClick, trackSessionEnd, processSessionQueue } from '../services/analytics'
 import { getPlanFeatures } from '../services/payments'
+import logoImg from '../assets/logo.png'
 // import fundo from '../assets/fundo.png'
 import './Profile.css'
 
@@ -138,7 +139,7 @@ const Profile = () => {
         <div className="profile-not-found">
           <div className="profile-logo">
             <span className="logo-icon">⚡</span>
-            <span className="logo-text">LinkRole</span>
+            <span className="logo-text">LinkTrivia</span>
           </div>
           <span className="not-found-icon">🔍</span>
           <h1>Page not found</h1>
@@ -363,9 +364,8 @@ const Profile = () => {
 
       {!getPlanFeatures(profileData?.plan).limits.removeBranding && (
         <div className="profile-branding-top">
-          <a href="/" target="_blank" rel="noopener noreferrer">
-            <span className="branding-icon">⚡</span>
-            <span className="branding-text">LinkRole</span>
+          <a href="/" target="_blank" rel="noopener noreferrer" title="LinkTrivia">
+            <img src={logoImg} alt="LinkTrivia" className="branding-logo" />
           </a>
         </div>
       )}
@@ -386,6 +386,12 @@ const Profile = () => {
           links={links}
           handleLinkClick={handleLinkClick}
           orbitColor={profileData?.orbitColor || '#8b5cf6'}
+        />
+      ) : theme === 'modern' ? (
+        <ModernLayout
+          profileData={profileData}
+          links={links}
+          handleLinkClick={handleLinkClick}
         />
       ) : (
         <div className="profile-container-public">
@@ -417,6 +423,53 @@ const Profile = () => {
             <h1 className="profile-name-public">{profileData?.displayName || profileData?.username}</h1>
             <p className="profile-username-public">@{profileData?.username}</p>
             {profileData?.bio && <p className="profile-bio-public">{profileData.bio}</p>}
+
+            {/* Action Buttons - Phone, Email, Share (Share only for non-classic themes) */}
+            {(profileData?.phone || profileData?.email || !['default', 'classic-light'].includes(theme)) && (
+              <div className="profile-action-buttons">
+                {profileData?.phone && (
+                  <a href={`tel:${profileData.phone}`} className="profile-action-btn" title="Call">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                  </a>
+                )}
+                {profileData?.email && (
+                  <a href={`mailto:${profileData.email}`} className="profile-action-btn" title="Email">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                      <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                  </a>
+                )}
+                {/* Share button - NOT on classic themes */}
+                {!['default', 'classic-light'].includes(theme) && (
+                  <button
+                    className="profile-action-btn"
+                    title="Share"
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({
+                          title: profileData?.displayName || profileData?.username,
+                          url: window.location.href
+                        })
+                      } else {
+                        navigator.clipboard.writeText(window.location.href)
+                        alert('Link copied!')
+                      }
+                    }}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="18" cy="5" r="3" />
+                      <circle cx="6" cy="12" r="3" />
+                      <circle cx="18" cy="19" r="3" />
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="profile-links-public">
@@ -499,6 +552,50 @@ const PortfolioLayout = ({ profileData, links, handleLinkClick, showAllLinks, se
           <h1 className="profile-name-public">{profileData?.displayName || profileData?.username}</h1>
           <p className="profile-username-public">@{profileData?.username}</p>
           {profileData?.bio && <p className="profile-bio-public">{profileData.bio}</p>}
+
+          {/* Action Buttons */}
+          {(profileData?.phone || profileData?.email) && (
+            <div className="profile-action-buttons" style={{ '--action-color': portfolioColor }}>
+              {profileData?.phone && (
+                <a href={`tel:${profileData.phone}`} className="profile-action-btn" title="Call">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </a>
+              )}
+              {profileData?.email && (
+                <a href={`mailto:${profileData.email}`} className="profile-action-btn" title="Email">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </a>
+              )}
+              <button
+                className="profile-action-btn"
+                title="Share"
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: profileData?.displayName || profileData?.username,
+                      url: window.location.href
+                    })
+                  } else {
+                    navigator.clipboard.writeText(window.location.href)
+                    alert('Link copied!')
+                  }
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -539,9 +636,84 @@ const OrbitLayout = ({ profileData, links, handleLinkClick, orbitColor }) => {
   // Top 6 links orbit (reduced from 8)
   const orbitLinks = links.slice(0, 6)
   const remainingLinks = links.slice(6)
+  const canvasRef = useRef(null)
+
+  // Particle animation effect
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')
+    let animationFrameId
+    let particles = []
+
+    const resizeCanvas = () => {
+      canvas.width = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+    }
+
+    // Create particles
+    const createParticles = () => {
+      particles = []
+      const particleCount = 50
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2 + 1,
+          speedX: (Math.random() - 0.5) * 0.5,
+          speedY: (Math.random() - 0.5) * 0.5,
+          opacity: Math.random() * 0.5 + 0.2
+        })
+      }
+    }
+
+    // Animate particles
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      particles.forEach(particle => {
+        // Update position
+        particle.x += particle.speedX
+        particle.y += particle.speedY
+
+        // Wrap around edges
+        if (particle.x < 0) particle.x = canvas.width
+        if (particle.x > canvas.width) particle.x = 0
+        if (particle.y < 0) particle.y = canvas.height
+        if (particle.y > canvas.height) particle.y = 0
+
+        // Draw particle
+        ctx.beginPath()
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
+        ctx.fillStyle = orbitColor || '#f97316'
+        ctx.globalAlpha = particle.opacity
+        ctx.fill()
+      })
+
+      ctx.globalAlpha = 1
+      animationFrameId = requestAnimationFrame(animate)
+    }
+
+    resizeCanvas()
+    createParticles()
+    animate()
+
+    window.addEventListener('resize', () => {
+      resizeCanvas()
+      createParticles()
+    })
+
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+      window.removeEventListener('resize', resizeCanvas)
+    }
+  }, [orbitColor])
 
   return (
     <div className="orbit-layout" style={{ '--orbit-color': orbitColor }}>
+      {/* Particle Canvas Background */}
+      <canvas ref={canvasRef} className="orbit-particles-canvas" />
       {/* LEFT COLUMN: Orbit Animation */}
       <div className="orbit-col-left">
         <div className="orbit-container">
@@ -586,6 +758,50 @@ const OrbitLayout = ({ profileData, links, handleLinkClick, orbitColor }) => {
           <h1 className="orbit-name">{profileData?.displayName}</h1>
           <p className="orbit-username">@{profileData?.username}</p>
           {profileData?.bio && <p className="orbit-bio">{profileData.bio}</p>}
+
+          {/* Action Buttons */}
+          {(profileData?.phone || profileData?.email) && (
+            <div className="profile-action-buttons" style={{ '--action-color': orbitColor }}>
+              {profileData?.phone && (
+                <a href={`tel:${profileData.phone}`} className="profile-action-btn" title="Call">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </a>
+              )}
+              {profileData?.email && (
+                <a href={`mailto:${profileData.email}`} className="profile-action-btn" title="Email">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </a>
+              )}
+              <button
+                className="profile-action-btn"
+                title="Share"
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: profileData?.displayName || profileData?.username,
+                      url: window.location.href
+                    })
+                  } else {
+                    navigator.clipboard.writeText(window.location.href)
+                    alert('Link copied!')
+                  }
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
 
         {remainingLinks.length > 0 && (
@@ -614,6 +830,189 @@ const OrbitLayout = ({ profileData, links, handleLinkClick, orbitColor }) => {
             ))}
           </div>
         )}
+      </div>
+    </div>
+  )
+}
+
+// ==========================================
+// MODERN THEME - Split Layout with Cards
+// ==========================================
+const ModernLayout = ({ profileData, links, handleLinkClick }) => {
+  const [isDarkMode, setIsDarkMode] = useState(true)
+
+  // Helper to get site name from URL
+  const getSiteName = (url) => {
+    try {
+      const hostname = new URL(url).hostname
+      return hostname.replace('www.', '').split('.')[0].charAt(0).toUpperCase() +
+        hostname.replace('www.', '').split('.')[0].slice(1)
+    } catch {
+      return 'Link'
+    }
+  }
+
+  // Helper to get favicon
+  const getFaviconUrl = (url) => {
+    try {
+      const domain = new URL(url).hostname
+      return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`
+    } catch {
+      return null
+    }
+  }
+
+  return (
+    <div className={`modern-layout ${isDarkMode ? 'modern-dark' : 'modern-light'}`}>
+      {/* Centered Container */}
+      <div className="modern-container">
+        {/* Left Panel - Profile Info */}
+        <div className="modern-panel-left">
+          {/* Theme Toggle Button (Moon/Sun) */}
+          <button
+            className="modern-theme-toggle"
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {isDarkMode ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+            )}
+          </button>
+
+          {/* Avatar with Ring */}
+          <div className="modern-avatar-wrapper">
+            <div className="modern-avatar-ring"></div>
+            <div className="modern-avatar">
+              {profileData?.photoURL ? (
+                <img src={profileData.photoURL} alt={profileData.displayName} />
+              ) : (
+                <span className="avatar-placeholder-public">
+                  {profileData?.displayName?.charAt(0) || profileData?.username?.charAt(0) || '?'}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <h1 className="modern-name">{profileData?.displayName || profileData?.username}</h1>
+
+          {/* Action Buttons */}
+          <div className="modern-action-buttons">
+            {profileData?.phone && (
+              <a href={`tel:${profileData.phone}`} className="modern-action-btn modern-action-btn-phone" title="Call">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                <span>{profileData.phone}</span>
+              </a>
+            )}
+            {profileData?.email && (
+              <a href={`mailto:${profileData.email}`} className="modern-action-btn" title="Email">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            )}
+            <button
+              className="modern-action-btn"
+              title="Share"
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({
+                    title: profileData?.displayName || profileData?.username,
+                    url: window.location.href
+                  })
+                } else {
+                  navigator.clipboard.writeText(window.location.href)
+                  alert('Link copied!')
+                }
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+            </button>
+          </div>
+
+          {profileData?.bio && (
+            <p className="modern-bio">{profileData.bio}</p>
+          )}
+
+          {/* Featured Link (first link) */}
+          {links.length > 0 && (
+            <a
+              href={links[0].url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="modern-featured-link"
+              onClick={(e) => handleLinkClick(e, links[0])}
+            >
+              <div className="modern-featured-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              </div>
+              <div className="modern-featured-text">
+                <span className="modern-featured-title">{links[0].title}</span>
+                <span className="modern-featured-desc">Visit my personal website.</span>
+              </div>
+            </a>
+          )}
+        </div>
+
+        {/* Right Panel - Links with scroll if 5+ */}
+        <div className="modern-panel-right">
+          <div className={`modern-links-container ${links.length > 5 ? 'has-scroll' : ''}`}>
+            {links.slice(1).map((link) => (
+              <a
+                key={link.id}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="modern-link-card"
+                onClick={(e) => handleLinkClick(e, link)}
+              >
+                <div className="modern-link-icon">
+                  <img
+                    src={getFaviconUrl(link.url)}
+                    alt=""
+                    onError={(e) => e.target.style.opacity = '0'}
+                  />
+                </div>
+                <div className="modern-link-content">
+                  <h3 className="modern-link-title">{getSiteName(link.url)}</h3>
+                  <p className="modern-link-desc">{link.title}</p>
+                </div>
+                <div className="modern-link-settings">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                  </svg>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

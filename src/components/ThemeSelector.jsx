@@ -2,41 +2,22 @@ import { getPlanFeatures } from '../services/payments'
 import './ThemeSelector.css'
 
 const themes = [
+  // FREE THEMES
   {
     id: 'default',
     name: 'Classic (Dark)',
     description: 'Minimalist Dark',
-    color: '#0ea5e9',
-    bgPreview: 'linear-gradient(180deg, #0a0a0b 0%, #1a1a1d 100%)'
+    color: '#8b8a8aff',
+    bgPreview: 'linear-gradient(180deg, #0a0a0b 0%, #1a1a1d 100%)',
+    tier: 'free'
   },
   {
     id: 'classic-light',
     name: 'Classic (Light)',
     description: 'Minimalist Light',
     color: '#cbd5e1',
-    bgPreview: 'linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%)'
-  },
-  {
-    id: 'elegante',
-    name: 'Elegant',
-    description: 'Light with gold',
-    color: '#c9a227',
-    bgPreview: 'linear-gradient(180deg, #f5f0e8 0%, #ebe5d8 50%, #e8e0d0 100%)'
-  },
-  {
-    id: 'tech',
-    name: 'Tech',
-    description: 'Dark with animations',
-    color: '#00d4ff',
-    bgPreview: 'linear-gradient(135deg, #0a192f 0%, #112240 50%, #1a365d 100%)',
-    isPro: false
-  },
-  {
-    id: 'gradient',
-    name: 'Aurora',
-    description: 'Vibrant gradient',
-    color: '#a855f7',
-    bgPreview: 'linear-gradient(135deg, #4c1d95 0%, #a855f7 40%, #db2777 100%)'
+    bgPreview: 'linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%)',
+    tier: 'free'
   },
   {
     id: 'neon',
@@ -44,39 +25,87 @@ const themes = [
     description: 'Futuristic style',
     color: '#8b5cf6',
     bgPreview: 'linear-gradient(180deg, #0f0f1a 0%, #1a0a2e 100%)',
-    isPro: false
+    tier: 'free'
   },
 
-  // 🔹 NOVO MODELO — Portfólio com imagens organizadas
+  // BASIC THEMES
+  {
+    id: 'elegante',
+    name: 'Elegant',
+    description: 'Light with gold',
+    color: '#c9a227',
+    bgPreview: 'linear-gradient(180deg, #f5f0e8 0%, #ebe5d8 50%, #e8e0d0 100%)',
+    tier: 'basic'
+  },
+  {
+    id: 'tech',
+    name: 'Tech',
+    description: 'Dark with animations',
+    color: '#00d4ff',
+    bgPreview: 'linear-gradient(135deg, #0a192f 0%, #112240 50%, #1a365d 100%)',
+    tier: 'basic'
+  },
+  {
+    id: 'gradient',
+    name: 'Aurora',
+    description: 'Vibrant gradient',
+    color: '#a855f7',
+    bgPreview: 'linear-gradient(135deg, #4c1d95 0%, #a855f7 40%, #db2777 100%)',
+    tier: 'basic'
+  },
+
+  // PRO/PREMIUM THEMES
   {
     id: 'portfolio',
     name: 'Portfolio',
     description: 'Organized image grid',
-    color: '#22c55e',
-    bgPreview: 'linear-gradient(180deg, #0f172a 0%, #020617 100%)',
+    color: '#068d37ff',
+    bgPreview: 'linear-gradient(135deg, #067022ff 0%, #013508ff 10%)',
     layout: 'portfolio',
-    isPro: false
+    tier: 'pro'
   },
-
-  // 🔹 NOVO MODELO — Imagem central com links a girar
   {
     id: 'orbit',
     name: 'Orbit',
     description: 'Links rotating around image',
     color: '#f97316',
-    bgPreview: 'radial-gradient(circle at center, #1f2937 0%, #020617 70%)',
+    bgPreview: 'radial-gradient(circle at center, #7a6128ff 0%, #311f01ff 70%)',
     layout: 'orbit',
-    isPro: false
+    tier: 'pro'
+  },
+  {
+    id: 'modern',
+    name: 'Modern',
+    description: 'Split layout with cards',
+    color: '#6366f1',
+    bgPreview: 'linear-gradient(135deg, #0f0f23 0%, #0d0d54ff 50%, #182750ff 100%)',
+    layout: 'modern',
+    tier: 'pro'
   }
 ]
 
 const ThemeSelector = ({ currentTheme, onSelectTheme, userPlan }) => {
-  const planFeatures = getPlanFeatures(userPlan || 'free')
-  const canUseCustomThemes = planFeatures.limits.customThemes
+  // Plan hierarchy: free < basic < pro < premium
+  const planHierarchy = { free: 0, basic: 1, pro: 2, premium: 3 }
+  const userPlanLevel = planHierarchy[userPlan || 'free'] || 0
+
+  // Check if user can use a theme based on tier
+  const canUseTheme = (themeTier) => {
+    const themeTierLevel = planHierarchy[themeTier] || 0
+    return userPlanLevel >= themeTierLevel
+  }
+
+  // Get badge text for tier
+  const getTierBadge = (tier) => {
+    if (tier === 'basic') return 'BASIC'
+    if (tier === 'pro') return 'PRO'
+    return null
+  }
 
   const handleSelectTheme = (theme) => {
-    if (theme.isPro && !canUseCustomThemes) {
-      alert('This theme is exclusive to Pro and Premium users! Upgrade to unlock.')
+    if (!canUseTheme(theme.tier)) {
+      const tierName = theme.tier === 'basic' ? 'Basic' : 'Pro'
+      alert(`This theme requires ${tierName} plan or higher! Upgrade to unlock.`)
       return
     }
     onSelectTheme(theme.id)
@@ -88,29 +117,34 @@ const ThemeSelector = ({ currentTheme, onSelectTheme, userPlan }) => {
       <p className="theme-selector-desc">Choose your page style</p>
 
       <div className="theme-buttons">
-        {themes.map((theme) => (
-          <button
-            key={theme.id}
-            className={`theme-btn ${currentTheme === theme.id ? 'active' : ''} ${theme.isPro && !canUseCustomThemes ? 'locked' : ''}`}
-            onClick={() => handleSelectTheme(theme)}
-            style={{
-              '--theme-color': theme.color,
-              '--theme-bg': theme.bgPreview
-            }}
-          >
-            <span className="theme-color-dot" style={{ background: theme.bgPreview }}></span>
-            <div className="theme-btn-info">
-              <span className="theme-btn-name">{theme.name}</span>
-              <span className="theme-btn-desc">{theme.description}</span>
-            </div>
-            {theme.isPro && <span className="theme-pro-tag">PRO</span>}
-            {currentTheme === theme.id && (
-              <svg className="theme-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            )}
-          </button>
-        ))}
+        {themes.map((theme) => {
+          const isLocked = !canUseTheme(theme.tier)
+          const badge = getTierBadge(theme.tier)
+
+          return (
+            <button
+              key={theme.id}
+              className={`theme-btn ${currentTheme === theme.id ? 'active' : ''} ${isLocked ? 'locked' : ''}`}
+              onClick={() => handleSelectTheme(theme)}
+              style={{
+                '--theme-color': theme.color,
+                '--theme-bg': theme.bgPreview
+              }}
+            >
+              <span className="theme-color-dot" style={{ background: theme.bgPreview }}></span>
+              <div className="theme-btn-info">
+                <span className="theme-btn-name">{theme.name}</span>
+                <span className="theme-btn-desc">{theme.description}</span>
+              </div>
+              {badge && <span className={`theme-tier-tag tier-${theme.tier}`}>{badge}</span>}
+              {currentTheme === theme.id && (
+                <svg className="theme-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              )}
+            </button>
+          )
+        })}
       </div>
     </div>
   )

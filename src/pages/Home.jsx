@@ -66,26 +66,26 @@ const Home = () => {
     { value: '150+', label: 'Countries' }
   ]
 
-const showcaseModels = [
-  {
-    image: model1,
-    name: 'Orbit',
-    description: 'Clean and modern layout for professionals and growing businesses',
-    category: 'Creative'
-  },
-  {
-    image: model2,
-    name: 'Tech',
-    description: 'Designed for developers, creators, and digital portfolios',
-    category: 'Personal'
-  },
-  {
-    image: model3,
-    name: 'Suave',
-    description: 'Elegant and calm design for coaches, therapists, and mentors',
-    category: 'Business'
-  }
-]
+  const showcaseModels = [
+    {
+      image: model1,
+      name: 'Orbit',
+      description: 'Clean and modern layout for professionals and growing businesses',
+      category: 'Creative'
+    },
+    {
+      image: model2,
+      name: 'Tech',
+      description: 'Designed for developers, creators, and digital portfolios',
+      category: 'Personal'
+    },
+    {
+      image: model3,
+      name: 'Suave',
+      description: 'Elegant and calm design for coaches, therapists, and mentors',
+      category: 'Business'
+    }
+  ]
 
 
   return (
@@ -230,7 +230,7 @@ const showcaseModels = [
         <div className="container">
           <div className="cta-card">
             <h2>Ready to Start?</h2>
-            <p>Join thousands of creators, businesses, and influencers who trust LinkRole</p>
+            <p>Join thousands of creators, businesses, and influencers who trust LinkTrivia</p>
             <Link to="/register" className="btn btn-primary btn-lg">
               Create Your Free Page
             </Link>
@@ -244,10 +244,10 @@ const showcaseModels = [
           <div className="footer-content">
             <div className="footer-brand">
               <span className="logo-icon">⚡</span>
-              <span className="logo-text text-gradient">LinkRole</span>
+              <span className="logo-text text-gradient">LinkTrivia</span>
             </div>
             <p className="footer-copyright">
-              © {new Date().getFullYear()} LinkRole. All rights reserved.
+              © {new Date().getFullYear()} LinkTrivia. All rights reserved.
             </p>
           </div>
         </div>

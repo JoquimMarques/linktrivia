@@ -15,13 +15,16 @@ const Analytics = () => {
   const planFeatures = getPlanFeatures(userData?.plan || 'free')
   const userPlan = userData?.plan || 'free'
   const maxDays = planFeatures.limits.analyticsMaxDays || 7
-  const canSeeLinkPerformance = planFeatures.limits.linkPerformance
+
+  // Check both plan limits AND purchased features with coins
+  const purchasedFeatures = userData?.purchasedFeatures || {}
+  const canSeeLinkPerformance = planFeatures.limits.linkPerformance || purchasedFeatures.linkPerformance
   const canSeeCountriesDevices = planFeatures.limits.countriesDevices
   const canSeeAvgTime = planFeatures.limits.avgTime
   const canSeeBounceRate = planFeatures.limits.bounceRate
   const canSeeTrafficSources = planFeatures.limits.trafficSources
   const canSeePeriodComparison = planFeatures.limits.periodComparison
-  const canSeePeakHours = planFeatures.limits.peakHours
+  const canSeePeakHours = planFeatures.limits.peakHours || purchasedFeatures.peakHours
 
   useEffect(() => {
     const fetchAnalytics = async () => {

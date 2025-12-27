@@ -4,15 +4,15 @@ import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 import { getAnalytics } from 'firebase/analytics'
 
-// Firebase configuration
+// Firebase configuration from environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyA2wqDIgriCRbeTy4ZJ6F_QQw7nSXadjIo",
-  authDomain: "venos-61916.firebaseapp.com",
-  projectId: "venos-61916",
-  storageBucket: "venos-61916.firebasestorage.app",
-  messagingSenderId: "316937782596",
-  appId: "1:316937782596:web:5dccbf5b4f2ab8a6498311",
-  measurementId: "G-1VPR9FC6NP"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 }
 
 // Firebase is now configured

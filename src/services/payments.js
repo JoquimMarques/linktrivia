@@ -1,19 +1,12 @@
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from './firebase'
 
-// Stripe payment links - TEST MODE (for testing)
+// Stripe payment links from environment variables
 export const STRIPE_LINKS = {
-  basic: 'https://buy.stripe.com/test_aFa5kE2KD6eScoW1MYaR200',
-  pro: 'https://buy.stripe.com/test_6oUcN670TcDg74CgHSaR201',
-  premium: 'https://buy.stripe.com/test_9B600k3OH8n0fB80IUaR202'
+  basic: import.meta.env.VITE_STRIPE_LINK_BASIC,
+  pro: import.meta.env.VITE_STRIPE_LINK_PRO,
+  premium: import.meta.env.VITE_STRIPE_LINK_PREMIUM
 }
-
-// Stripe payment links - LIVE MODE (uncomment when ready for production)
-// export const STRIPE_LINKS = {
-//   basic: 'https://buy.stripe.com/aFa5kE2KD6eScoW1MYaR200',
-//   pro: 'https://buy.stripe.com/6oUcN670TcDg74CgHSaR201',
-//   premium: 'https://buy.stripe.com/9B200k3OH8n0fB80IUaR202'
-// }
 
 // Pricing plans configuration
 export const PLANS = {
@@ -29,7 +22,7 @@ export const PLANS = {
       'Basic QR Code',
       'Smart Stats (7 days)',
       'Total clicks & views',
-      'LinkRole Branding'
+      'LinkTrivia Branding'
     ],
     limits: {
       maxLinks: 5,
