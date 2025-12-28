@@ -115,28 +115,42 @@ async function verifyStripeWebhook(payload, signature, secret) {
  * Handle successful checkout - update user plan
  */
 async function handleCheckoutComplete(session, env) {
+    console.log('=== CHECKOUT SESSION COMPLETED ===');
+    console.log('Session ID:', session.id);
+    console.log('Customer:', session.customer);
+    console.log('Customer Email:', session.customer_email);
+    console.log('Client Reference ID:', session.client_reference_id);
+    console.log('Metadata:', JSON.stringify(session.metadata));
+    console.log('Amount:', session.amount_total);
+
     // Extract user ID and plan from client_reference_id (format: "userId_planId")
     const clientRef = session.client_reference_id;
     if (!clientRef) {
-        console.error('No client_reference_id in session');
+        console.error('ERROR: No client_reference_id in session!');
+        console.log('Full session object:', JSON.stringify(session));
         return;
     }
 
     const [userId, planId] = clientRef.split('_');
     if (!userId || !planId) {
-        console.error('Invalid client_reference_id format:', clientRef);
+        console.error('ERROR: Invalid client_reference_id format:', clientRef);
         return;
     }
 
-    console.log(`Updating user ${userId} to plan: ${planId}`);
+    console.log(`Parsed - User ID: ${userId}, Plan ID: ${planId}`);
 
     // Update Firestore via REST API
-    await updateUserPlan(userId, planId, {
-        stripeCustomerId: session.customer,
-        stripeSessionId: session.id,
-        amount: session.amount_total / 100,
-        currency: session.currency
-    }, env);
+    try {
+        await updateUserPlan(userId, planId, {
+            stripeCustomerId: session.customer,
+            stripeSessionId: session.id,
+            amount: session.amount_total / 100,
+            currency: session.currency
+        }, env);
+        console.log('SUCCESS: User plan updated!');
+    } catch (error) {
+        console.error('ERROR updating user plan:', error.message);
+    }
 }
 
 /**
