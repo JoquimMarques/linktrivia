@@ -501,7 +501,7 @@ const Dashboard = () => {
 
   // Social sharing functions
   const getShareUrl = () => `${window.location.origin}/${userData?.username}`
-  const getShareText = () => `Check out my LinkTrivia page! 🔗`
+  const getShareText = () => `Check out my Orbilink page! 🔗`
 
   const shareToSocial = (platform) => {
     const url = encodeURIComponent(getShareUrl())
@@ -513,7 +513,7 @@ const Dashboard = () => {
       whatsapp: `https://wa.me/?text=${text}%20${url}`,
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
       telegram: `https://t.me/share/url?url=${url}&text=${text}`,
-      email: `mailto:?subject=${encodeURIComponent('Check out my LinkTrivia page!')}&body=${text}%20${url}`
+      email: `mailto:?subject=${encodeURIComponent('Check out my Orbilink page!')}&body=${text}%20${url}`
     }
 
     if (platform === 'email') {
@@ -1020,7 +1020,7 @@ const Dashboard = () => {
                           </div>
                         )}
                         <span className="input-hint">
-                          linktrivia.com/{username}
+                          orbil.ink/{username}
                           {(planFeatures.limits.usernameChangesLimit !== Infinity) && (
                             <span className="username-limit-hint">
                               {' • '}{canChangeUsername().remaining} change{canChangeUsername().remaining !== 1 ? 's' : ''} remaining this month

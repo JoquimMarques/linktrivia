@@ -230,7 +230,7 @@ const Home = () => {
         <div className="container">
           <div className="cta-card">
             <h2>Ready to Start?</h2>
-            <p>Join thousands of creators, businesses, and influencers who trust LinkTrivia</p>
+            <p>Join thousands of creators, businesses, and influencers who trust Orbilink</p>
             <Link to="/register" className="btn btn-primary btn-lg">
               Create Your Free Page
             </Link>
@@ -244,10 +244,10 @@ const Home = () => {
           <div className="footer-content">
             <div className="footer-brand">
               <span className="logo-icon">⚡</span>
-              <span className="logo-text text-gradient">LinkTrivia</span>
+              <span className="logo-text text-gradient">Orbilink</span>
             </div>
             <p className="footer-copyright">
-              © {new Date().getFullYear()} LinkTrivia. All rights reserved.
+              © {new Date().getFullYear()} Orbilink. All rights reserved.
             </p>
           </div>
         </div>

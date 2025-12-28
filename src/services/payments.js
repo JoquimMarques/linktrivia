@@ -22,7 +22,7 @@ export const PLANS = {
       'Basic QR Code',
       'Smart Stats (7 days)',
       'Total clicks & views',
-      'LinkTrivia Branding'
+      'Orbilink Branding'
     ],
     limits: {
       maxLinks: 5,

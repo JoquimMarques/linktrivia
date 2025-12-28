@@ -1,0 +1,12 @@
+name = "orbilink-stripe-webhook"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Environment variables - set these with: wrangler secret put VARIABLE_NAME
+# Required secrets:
+# - STRIPE_WEBHOOK_SECRET (from Stripe Dashboard > Webhooks)
+# - FIREBASE_PROJECT_ID (your Firebase project ID)
+
+[vars]
+# You can set non-sensitive variables here
+# FIREBASE_PROJECT_ID = "your-project-id"

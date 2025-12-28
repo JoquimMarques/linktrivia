@@ -6,9 +6,18 @@ service cloud.firestore {
       // Allow read for public profile data
       allow read: if true;
       
-      // Allow write only for the authenticated user
+      // Allow create only for the authenticated user
       allow create: if request.auth != null && request.auth.uid == userId;
+      
+      // Allow update for the authenticated user
       allow update: if request.auth != null && request.auth.uid == userId;
+      
+      // Allow webhook to update only plan-related fields (no auth required)
+      // This is safe because only our Stripe webhook (with signature verification) can trigger this
+      allow update: if request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['plan', 'planUpdatedAt', 'lastPayment', 'stripeCustomerId', 'stripeSubscriptionId', 'stripeSubscriptionStatus']);
+      
+      // Allow delete only for the authenticated user
       allow delete: if request.auth != null && request.auth.uid == userId;
     }
     

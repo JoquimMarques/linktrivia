@@ -139,7 +139,7 @@ const Profile = () => {
         <div className="profile-not-found">
           <div className="profile-logo">
             <span className="logo-icon">⚡</span>
-            <span className="logo-text">LinkTrivia</span>
+            <span className="logo-text">Orbilink</span>
           </div>
           <span className="not-found-icon">🔍</span>
           <h1>Page not found</h1>
@@ -364,8 +364,8 @@ const Profile = () => {
 
       {!getPlanFeatures(profileData?.plan).limits.removeBranding && (
         <div className="profile-branding-top">
-          <a href="/" target="_blank" rel="noopener noreferrer" title="LinkTrivia">
-            <img src={logoImg} alt="LinkTrivia" className="branding-logo" />
+          <a href="/" target="_blank" rel="noopener noreferrer" title="Orbilink">
+            <img src={logoImg} alt="Orbilink" className="branding-logo" />
           </a>
         </div>
       )}

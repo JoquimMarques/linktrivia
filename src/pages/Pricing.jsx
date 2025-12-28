@@ -33,7 +33,7 @@ const Pricing = () => {
         { text: 'Smart Stats (7 days)', included: true },
         { text: 'Total clicks & views', included: true },
         { text: '2 username changes/month', included: true },
-        { text: 'Linktrivia Branding', included: true, note: 'visible' },
+        { text: 'Orbilink Branding', included: true, note: 'visible' },
         { text: 'Unlimited links', included: false },
         { text: 'Custom QR Code', included: false },
         { text: 'Premium Themes', included: false },
@@ -313,7 +313,7 @@ const Pricing = () => {
         {/* CTA */}
         <div className="pricing-cta">
           <h2>Ready to grow your links?</h2>
-          <p>Join thousands of creators and businesses using LinkTrivia to manage their online presence.</p>
+          <p>Join thousands of creators and businesses using Orbilink to manage their online presence.</p>
           {!isAuthenticated ? (
             <Link to="/register" className="btn btn-primary btn-lg">
               Get Started Free
