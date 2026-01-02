@@ -90,12 +90,14 @@
   position: absolute;
   left: var(--spacing-md);
   color: var(--text-muted);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   pointer-events: none;
+  z-index: 1;
+  white-space: nowrap;
 }
 
 .input-with-prefix {
-  padding-left: 100px;
+  padding-left: 70px !important;
 }
 
 .input-status {
@@ -219,5 +221,3 @@
     padding: var(--spacing-xl);
   }
 }
-
-

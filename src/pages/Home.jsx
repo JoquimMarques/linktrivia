@@ -243,7 +243,6 @@ const Home = () => {
         <div className="container">
           <div className="footer-content">
             <div className="footer-brand">
-              <span className="logo-icon">⚡</span>
               <span className="logo-text text-gradient">Orbilink</span>
             </div>
             <p className="footer-copyright">

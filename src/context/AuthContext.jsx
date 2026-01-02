@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../services/firebase'
-import { getUserData } from '../services/auth'
+import { getUserData, handleGoogleRedirect } from '../services/auth'
 
 const AuthContext = createContext({})
 
@@ -19,10 +19,22 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Handle Google redirect result on app load
+    const checkRedirectResult = async () => {
+      try {
+        await handleGoogleRedirect()
+      } catch (error) {
+        console.error('Error handling Google redirect:', error)
+      }
+    }
+    checkRedirectResult()
+  }, [])
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         setUser(firebaseUser)
-        
+
         // Fetch additional user data from Firestore
         const { data } = await getUserData(firebaseUser.uid)
         setUserData(data)

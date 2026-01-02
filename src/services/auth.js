@@ -6,6 +6,8 @@ import {
   updateProfile,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   onAuthStateChanged
 } from 'firebase/auth'
 import { doc, setDoc, getDoc, deleteDoc, updateDoc, serverTimestamp } from 'firebase/firestore'
@@ -64,16 +66,29 @@ export const loginUser = async (email, password) => {
 // Google Sign In
 export const signInWithGoogle = async () => {
   try {
-    const result = await signInWithPopup(auth, googleProvider)
-    const user = result.user
+    // Check if we're on mobile
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+    let user
+
+    if (isMobile) {
+      // Use redirect for mobile devices
+      await signInWithRedirect(auth, googleProvider)
+      // The result will be handled by handleGoogleRedirect
+      return { user: null, error: null, redirecting: true }
+    } else {
+      // Use popup for desktop
+      const result = await signInWithPopup(auth, googleProvider)
+      user = result.user
+    }
 
     // Check if user document exists
     const userDoc = await getDoc(doc(db, 'users', user.uid))
-    
+
     if (!userDoc.exists()) {
       // Create new user document
       const username = user.email.split('@')[0] + Math.random().toString(36).slice(-4)
-      
+
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         email: user.email,
@@ -94,6 +109,58 @@ export const signInWithGoogle = async () => {
     }
 
     return { user, error: null }
+  } catch (error) {
+    // If popup is blocked or fails, try redirect
+    if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user') {
+      try {
+        await signInWithRedirect(auth, googleProvider)
+        return { user: null, error: null, redirecting: true }
+      } catch (redirectError) {
+        return { user: null, error: redirectError.message }
+      }
+    }
+    return { user: null, error: error.message }
+  }
+}
+
+// Handle Google redirect result
+export const handleGoogleRedirect = async () => {
+  try {
+    const result = await getRedirectResult(auth)
+
+    if (result) {
+      const user = result.user
+
+      // Check if user document exists
+      const userDoc = await getDoc(doc(db, 'users', user.uid))
+
+      if (!userDoc.exists()) {
+        // Create new user document
+        const username = user.email.split('@')[0] + Math.random().toString(36).slice(-4)
+
+        await setDoc(doc(db, 'users', user.uid), {
+          uid: user.uid,
+          email: user.email,
+          username: username.toLowerCase(),
+          displayName: user.displayName || username,
+          photoURL: user.photoURL,
+          bio: '',
+          links: [],
+          theme: 'default',
+          plan: 'free',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        })
+
+        await setDoc(doc(db, 'usernames', username.toLowerCase()), {
+          uid: user.uid
+        })
+      }
+
+      return { user, error: null }
+    }
+
+    return { user: null, error: null }
   } catch (error) {
     return { user: null, error: error.message }
   }
@@ -156,9 +223,9 @@ export const updateUsername = async (uid, oldUsername, newUsername) => {
 
     // Validate username format
     if (!/^[a-z0-9_]{3,20}$/.test(normalizedNew)) {
-      return { 
-        success: false, 
-        error: 'Username deve ter entre 3-20 caracteres (letras, números ou _)' 
+      return {
+        success: false,
+        error: 'Username deve ter entre 3-20 caracteres (letras, números ou _)'
       }
     }
 
