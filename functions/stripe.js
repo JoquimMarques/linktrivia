@@ -282,9 +282,31 @@ async function handleInvoicePaymentSucceeded(invoice) {
 async function handleInvoicePaymentFailed(invoice) {
     console.log('Processing invoice.payment_failed:', {
         invoiceId: invoice.id,
-        customerId: invoice.customer
+        customerId: invoice.customer,
+        subscriptionId: invoice.subscription
     })
 
-    // You could send a notification to the user here
-    // or take other actions for failed payments
+    // Find user by Stripe customer ID
+    const usersQuery = await db.collection('users')
+        .where('stripeCustomerId', '==', invoice.customer)
+        .limit(1)
+        .get()
+
+    if (!usersQuery.empty) {
+        const userDoc = usersQuery.docs[0]
+
+        // Downgrade to free plan when payment fails
+        await userDoc.ref.update({
+            plan: 'free',
+            stripeSubscriptionStatus: 'payment_failed',
+            planUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            lastPaymentFailed: {
+                invoiceId: invoice.id,
+                date: admin.firestore.FieldValue.serverTimestamp(),
+                reason: 'payment_failed'
+            }
+        })
+
+        console.log(`Downgraded user ${userDoc.id} to free plan due to payment failure`)
+    }
 }
