@@ -421,7 +421,7 @@ const Analytics = () => {
           {/* Period Comparison - Premium only */}
           {canSeePeriodComparison ? (
             <div className="stat-detail-card card">
-              <h3>📈 Period Comparison</h3>
+              <h3><TrendingUp size={20} /> Period Comparison</h3>
               <div className="comparison-stats">
                 <div className="comparison-item">
                   <span className="comparison-label">Views</span>

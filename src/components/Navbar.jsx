@@ -4,7 +4,8 @@ import { useAuth } from '../context/AuthContext'
 import { useAuthActions } from '../hooks/useAuth'
 import { useTheme } from '../context/ThemeContext'
 import './Navbar.css'
-import logo from '../assets/logo.png'
+import logoWhite from '../assets/logo.png'
+import logoBlack from '../assets/logoblack.png'
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -15,12 +16,15 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname === path
 
+  // Use white logo for dark mode, black logo for light mode
+  const currentLogo = isDarkMode ? logoWhite : logoBlack
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
         <Link to="/" className="navbar-logo">
-          <span className="logo-icon"><img src={logo} alt="Logo" /></span>
+          <span className="logo-icon"><img src={currentLogo} alt="Logo" /></span>
           <span className="logo-text"></span>
         </Link>
 

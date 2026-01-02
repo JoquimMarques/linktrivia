@@ -40,6 +40,8 @@ const Dashboard = () => {
   const [portfolioPhotos, setPortfolioPhotos] = useState([])
   const [portfolioColor, setPortfolioColor] = useState('#8b5cf6')
   const [orbitColor, setOrbitColor] = useState('#8b5cf6')
+  const [glassBackground, setGlassBackground] = useState('')
+  const [uploadingGlassBackground, setUploadingGlassBackground] = useState(false)
   const [uploadingPortfolioPhoto, setUploadingPortfolioPhoto] = useState(false)
 
   // Utility to compress image and convert to Base64
@@ -156,6 +158,7 @@ const Dashboard = () => {
       setPortfolioPhotos(userData.portfolioPhotos || [])
       setPortfolioColor(userData.portfolioColor || '#8b5cf6')
       setOrbitColor(userData.orbitColor || '#8b5cf6')
+      setGlassBackground(userData.glassBackground || '')
       setUsername(userData.username || '')
     }
   }, [userData])
@@ -245,6 +248,51 @@ const Dashboard = () => {
       await refreshUserData()
     } catch (error) {
       console.error('Error saving Orbit color:', error)
+    }
+  }
+
+  const handleGlassBackgroundUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image')
+      return
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      alert('The image must be at most 10MB')
+      return
+    }
+
+    setUploadingGlassBackground(true)
+    try {
+      // Higher resolution for background (1920x1080)
+      const base64 = await compressAndToBase64(file, 1920, 1080, 0.8)
+      setGlassBackground(base64)
+
+      await updateDoc(doc(db, 'users', user.uid), {
+        glassBackground: base64,
+        updatedAt: serverTimestamp()
+      })
+      await refreshUserData()
+    } catch (error) {
+      console.error('Error processing image:', error)
+      alert('Error processing image')
+    }
+    setUploadingGlassBackground(false)
+  }
+
+  const handleRemoveGlassBackground = async () => {
+    setGlassBackground('')
+    try {
+      await updateDoc(doc(db, 'users', user.uid), {
+        glassBackground: '',
+        updatedAt: serverTimestamp()
+      })
+      await refreshUserData()
+    } catch (error) {
+      console.error('Error removing background:', error)
     }
   }
 
@@ -1303,6 +1351,49 @@ const Dashboard = () => {
                       />
                       <span className="color-hex-value">{orbitColor}</span>
                     </div>
+                  </div>
+                )}
+
+                {theme === 'glass' && (
+                  <div className="glass-config">
+                    <h4>Background Image</h4>
+                    <p className="config-description">Upload a background image for your Glass theme</p>
+
+                    <div className="glass-background-preview">
+                      {glassBackground ? (
+                        <div className="glass-bg-container">
+                          <img src={glassBackground} alt="Glass Background" className="glass-bg-image" />
+                          <button
+                            className="remove-glass-bg-btn"
+                            onClick={handleRemoveGlassBackground}
+                          >
+                            ✕ Remove
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="glass-bg-upload">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleGlassBackgroundUpload}
+                            style={{ display: 'none' }}
+                          />
+                          {uploadingGlassBackground ? (
+                            <div className="loading-spinner-small"></div>
+                          ) : (
+                            <>
+                              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                <circle cx="8.5" cy="8.5" r="1.5" />
+                                <polyline points="21,15 16,10 5,21" />
+                              </svg>
+                              <span>Upload Background</span>
+                            </>
+                          )}
+                        </label>
+                      )}
+                    </div>
+                    <p className="config-hint">Tip: Use a high-resolution image for better results on all devices</p>
                   </div>
                 )}
               </div>

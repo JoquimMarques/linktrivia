@@ -27,6 +27,14 @@ const themes = [
     bgPreview: 'linear-gradient(180deg, #0f0f1a 0%, #1a0a2e 100%)',
     tier: 'free'
   },
+  {
+    id: 'glass',
+    name: 'Glass',
+    description: 'Custom background + blur',
+    color: '#767676ff',
+    bgPreview: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(100,100,100,0.2) 100%)',
+    tier: 'basic'
+  },
 
   // BASIC THEMES
   {

@@ -17,8 +17,18 @@ service cloud.firestore {
       allow update: if request.resource.data.diff(resource.data).affectedKeys()
         .hasOnly(['plan', 'planUpdatedAt', 'lastPayment', 'stripeCustomerId', 'stripeSubscriptionId', 'stripeSubscriptionStatus']);
       
+      // Allow anyone to update ONLY analytics fields (for tracking views/clicks from anonymous visitors)
+      allow update: if request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['analytics', 'links']);
+      
       // Allow delete only for the authenticated user
       allow delete: if request.auth != null && request.auth.uid == userId;
+
+      // Analytics subcollection - Allow anyone to read/write for tracking
+      match /analytics/{date} {
+        allow read: if true;
+        allow create, update: if true;
+      }
     }
     
     // Usernames collection (for uniqueness check)
@@ -36,5 +46,3 @@ service cloud.firestore {
     }
   }
 }
-
-

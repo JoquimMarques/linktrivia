@@ -4,7 +4,8 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../services/firebase'
 import { trackProfileView, trackLinkClick, trackSessionEnd, processSessionQueue } from '../services/analytics'
 import { getPlanFeatures } from '../services/payments'
-import logoImg from '../assets/logo.png'
+import logoWhite from '../assets/logo.png'
+import logoBlack from '../assets/logoblack.png'
 // import fundo from '../assets/fundo.png'
 import './Profile.css'
 
@@ -360,12 +361,21 @@ const Profile = () => {
   }
 
   return (
-    <div className={`profile-page-public theme-${theme}`}>
+    <div
+      className={`profile-page-public theme-${theme}`}
+      style={theme === 'glass' && profileData?.glassBackground ? {
+        backgroundImage: `url(${profileData.glassBackground})`
+      } : undefined}
+    >
 
       {!getPlanFeatures(profileData?.plan).limits.removeBranding && (
         <div className="profile-branding-top">
           <a href="/" target="_blank" rel="noopener noreferrer" title="Orbilink">
-            <img src={logoImg} alt="Orbilink" className="branding-logo" />
+            <img
+              src={['elegante', 'classic-light'].includes(theme) ? logoBlack : logoWhite}
+              alt="Orbilink"
+              className="branding-logo"
+            />
           </a>
         </div>
       )}
