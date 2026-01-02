@@ -160,6 +160,12 @@ const Navbar = () => {
               My Profile
             </Link>
             <button
+              onClick={() => { toggleTheme(); setMobileMenuOpen(false); }}
+              className="mobile-link"
+            >
+              {isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
+            </button>
+            <button
               onClick={() => { logout(); setMobileMenuOpen(false); }}
               className="mobile-link"
             >
