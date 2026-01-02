@@ -7,6 +7,8 @@ import Dashboard from './pages/Dashboard'
 import Pricing from './pages/Pricing'
 import Profile from './pages/Profile'
 import Analytics from './pages/Analytics'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {
@@ -18,7 +20,9 @@ function App() {
     location.pathname !== '/register' &&
     location.pathname !== '/dashboard' &&
     location.pathname !== '/pricing' &&
-    location.pathname !== '/analytics'
+    location.pathname !== '/analytics' &&
+    location.pathname !== '/privacy' &&
+    location.pathname !== '/terms'
 
   return (
     <div className="app">
@@ -31,6 +35,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route
             path="/dashboard"
             element={
@@ -55,3 +61,4 @@ function App() {
 }
 
 export default App
+
