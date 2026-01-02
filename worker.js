@@ -48,6 +48,11 @@ export default {
                     await handleSubscriptionCancelled(subscription, env);
                     break;
                 }
+                case 'invoice.payment_failed': {
+                    const invoice = event.data.object;
+                    await handlePaymentFailed(invoice, env);
+                    break;
+                }
                 default:
                     console.log(`Unhandled event: ${event.type}`);
             }
@@ -157,10 +162,109 @@ async function handleCheckoutComplete(session, env) {
  * Handle subscription cancelled - downgrade to free
  */
 async function handleSubscriptionCancelled(subscription, env) {
-    // Find user by Stripe customer ID and downgrade
-    // This requires querying Firestore which is more complex via REST API
-    // For now, log the event - you may want to handle this differently
-    console.log(`Subscription cancelled for customer: ${subscription.customer}`);
+    console.log('=== SUBSCRIPTION CANCELLED ===');
+    console.log('Customer ID:', subscription.customer);
+
+    // Query Firestore to find user by stripeCustomerId
+    const user = await findUserByStripeCustomerId(subscription.customer, env);
+
+    if (user) {
+        await downgradeUserToFree(user.userId, 'subscription_cancelled', env);
+        console.log(`SUCCESS: Downgraded user ${user.userId} to free plan`);
+    } else {
+        console.log('WARNING: No user found for customer:', subscription.customer);
+    }
+}
+
+/**
+ * Handle payment failed - downgrade to free
+ */
+async function handlePaymentFailed(invoice, env) {
+    console.log('=== PAYMENT FAILED ===');
+    console.log('Customer ID:', invoice.customer);
+    console.log('Invoice ID:', invoice.id);
+
+    // Query Firestore to find user by stripeCustomerId
+    const user = await findUserByStripeCustomerId(invoice.customer, env);
+
+    if (user) {
+        await downgradeUserToFree(user.userId, 'payment_failed', env);
+        console.log(`SUCCESS: Downgraded user ${user.userId} to free plan due to payment failure`);
+    } else {
+        console.log('WARNING: No user found for customer:', invoice.customer);
+    }
+}
+
+/**
+ * Find user by Stripe Customer ID via Firestore REST API
+ */
+async function findUserByStripeCustomerId(stripeCustomerId, env) {
+    const projectId = env.FIREBASE_PROJECT_ID;
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents:runQuery`;
+
+    const query = {
+        structuredQuery: {
+            from: [{ collectionId: 'users' }],
+            where: {
+                fieldFilter: {
+                    field: { fieldPath: 'stripeCustomerId' },
+                    op: 'EQUAL',
+                    value: { stringValue: stripeCustomerId }
+                }
+            },
+            limit: 1
+        }
+    };
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(query)
+    });
+
+    if (!response.ok) {
+        console.error('Firestore query failed:', await response.text());
+        return null;
+    }
+
+    const results = await response.json();
+
+    if (results && results[0] && results[0].document) {
+        const docPath = results[0].document.name;
+        const userId = docPath.split('/').pop();
+        return { userId };
+    }
+
+    return null;
+}
+
+/**
+ * Downgrade user to free plan
+ */
+async function downgradeUserToFree(userId, reason, env) {
+    const projectId = env.FIREBASE_PROJECT_ID;
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${userId}?updateMask.fieldPaths=plan&updateMask.fieldPaths=planUpdatedAt&updateMask.fieldPaths=stripeSubscriptionStatus`;
+
+    const body = {
+        fields: {
+            plan: { stringValue: 'free' },
+            planUpdatedAt: { timestampValue: new Date().toISOString() },
+            stripeSubscriptionStatus: { stringValue: reason }
+        }
+    };
+
+    const response = await fetch(url, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Firestore update failed: ${error}`);
+    }
+
+    console.log(`Downgraded user ${userId} to free plan (reason: ${reason})`);
 }
 
 /**
@@ -168,12 +272,13 @@ async function handleSubscriptionCancelled(subscription, env) {
  */
 async function updateUserPlan(userId, plan, paymentInfo, env) {
     const projectId = env.FIREBASE_PROJECT_ID;
-    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${userId}?updateMask.fieldPaths=plan&updateMask.fieldPaths=planUpdatedAt&updateMask.fieldPaths=lastPayment`;
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${userId}?updateMask.fieldPaths=plan&updateMask.fieldPaths=planUpdatedAt&updateMask.fieldPaths=lastPayment&updateMask.fieldPaths=stripeCustomerId`;
 
     const body = {
         fields: {
             plan: { stringValue: plan },
             planUpdatedAt: { timestampValue: new Date().toISOString() },
+            stripeCustomerId: { stringValue: paymentInfo.stripeCustomerId || '' },
             lastPayment: {
                 mapValue: {
                     fields: {
@@ -193,8 +298,6 @@ async function updateUserPlan(userId, plan, paymentInfo, env) {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
-            // For public Firestore rules, no auth needed
-            // If your rules require auth, you'll need a service account
         },
         body: JSON.stringify(body)
     });
@@ -206,3 +309,4 @@ async function updateUserPlan(userId, plan, paymentInfo, env) {
 
     console.log(`Successfully updated user ${userId} to plan: ${plan}`);
 }
+
