@@ -454,7 +454,13 @@ const Analytics = () => {
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                   </svg>
-                  <h4>📈 Period Comparison</h4>
+                  <h4>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="22,7 13.5,15.5 8.5,10.5 2,17" />
+                      <polyline points="16,7 22,7 22,13" />
+                    </svg>
+                    Period Comparison
+                  </h4>
                   <p>Compare metrics with previous periods</p>
                   <Link to="/pricing" className="btn btn-primary btn-sm">
                     Upgrade to Premium
@@ -467,7 +473,13 @@ const Analytics = () => {
           {/* Peak Hours - Premium only */}
           {canSeePeakHours ? (
             <div className="stat-detail-card card">
-              <h3>🕐 Peak Hours</h3>
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                Peak Hours
+              </h3>
               <div className="peak-hours-chart">
                 {[...Array(12)].map((_, i) => {
                   const hour = i * 2
@@ -486,8 +498,18 @@ const Analytics = () => {
                 })}
               </div>
               <div className="peak-hours-summary">
-                <p>🔥 Most active: <strong>14:00 - 16:00</strong></p>
-                <p>📉 Least active: <strong>02:00 - 06:00</strong></p>
+                <p>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2" style={{ marginRight: '4px', verticalAlign: 'middle' }}>
+                    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z" />
+                  </svg>
+                  Most active: <strong>14:00 - 16:00</strong>
+                </p>
+                <p>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" style={{ marginRight: '4px', verticalAlign: 'middle' }}>
+                    <polyline points="22,7 13.5,15.5 8.5,10.5 2,17" />
+                  </svg>
+                  Least active: <strong>02:00 - 06:00</strong>
+                </p>
               </div>
             </div>
           ) : (
@@ -498,7 +520,13 @@ const Analytics = () => {
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                   </svg>
-                  <h4>🕐 Peak Hours</h4>
+                  <h4>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    Peak Hours
+                  </h4>
                   <p>See when your visitors are most active</p>
                   <Link to="/pricing" className="btn btn-primary btn-sm">
                     Upgrade to Premium

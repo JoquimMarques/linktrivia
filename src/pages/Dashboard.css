@@ -1236,11 +1236,17 @@
 
   .header-actions {
     width: 100%;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
   }
 
   .header-actions .btn {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 100px;
     justify-content: center;
+    white-space: nowrap;
+    font-size: 0.8125rem;
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 
   .add-link-form {
