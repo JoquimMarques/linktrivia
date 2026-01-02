@@ -93,7 +93,7 @@
   position: absolute;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 25px 80px rgba(0, 0, 0, 0.4),
     0 10px 30px rgba(0, 0, 0, 0.3);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -111,7 +111,7 @@
 .model-phone:hover {
   transform: translateY(-20px) scale(1.05) !important;
   z-index: 10 !important;
-  box-shadow: 
+  box-shadow:
     0 40px 100px rgba(139, 92, 246, 0.3),
     0 20px 50px rgba(0, 0, 0, 0.4);
 }
@@ -150,18 +150,39 @@
 }
 
 @keyframes floatLeft {
-  0%, 100% { transform: translateY(-50%) rotate(-8deg); }
-  50% { transform: translateY(-55%) rotate(-6deg); }
+
+  0%,
+  100% {
+    transform: translateY(-50%) rotate(-8deg);
+  }
+
+  50% {
+    transform: translateY(-55%) rotate(-6deg);
+  }
 }
 
 @keyframes floatCenter {
-  0%, 100% { transform: translate(-50%, -50%); }
-  50% { transform: translate(-50%, -53%); }
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%);
+  }
+
+  50% {
+    transform: translate(-50%, -53%);
+  }
 }
 
 @keyframes floatRight {
-  0%, 100% { transform: translateY(-50%) rotate(8deg); }
-  50% { transform: translateY(-55%) rotate(6deg); }
+
+  0%,
+  100% {
+    transform: translateY(-50%) rotate(8deg);
+  }
+
+  50% {
+    transform: translateY(-55%) rotate(6deg);
+  }
 }
 
 .hero-glow {
@@ -268,7 +289,7 @@
 .showcase-card:hover {
   transform: translateY(-12px);
   border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.3),
     0 0 40px rgba(139, 92, 246, 0.15);
 }
@@ -448,6 +469,21 @@
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 700;
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--spacing-lg);
+}
+
+.footer-links a {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: var(--primary-400);
 }
 
 .footer-copyright {

@@ -245,6 +245,10 @@ const Home = () => {
             <div className="footer-brand">
               <span className="logo-text text-gradient">Orbilink</span>
             </div>
+            <div className="footer-links">
+              <Link to="/privacy">Privacy Policy</Link>
+              <Link to="/terms">Terms of Service</Link>
+            </div>
             <p className="footer-copyright">
               © {new Date().getFullYear()} Orbilink. All rights reserved.
             </p>
