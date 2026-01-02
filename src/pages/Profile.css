@@ -1499,9 +1499,9 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(238, 236, 236, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--text-secondary);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1510,18 +1510,34 @@
   text-decoration: none;
 }
 
+.profile-action-btn svg {
+  stroke: #ffffff;
+  opacity: 0.65;
+  
+}
+
 .profile-action-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
-  color: var(--text-primary);
+  color: #ffffff;
+}
+
+.profile-action-btn:hover svg {
+  opacity: 1;
 }
 
 /* Light theme action buttons */
 .profile-page-public.theme-elegante .profile-action-btn,
 .profile-page-public.theme-classic-light .profile-action-btn {
   background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  color: #64748b;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: #334155;
+}
+
+.profile-page-public.theme-elegante .profile-action-btn svg,
+.profile-page-public.theme-classic-light .profile-action-btn svg {
+  stroke: #334155;
+  opacity: 0.9;
 }
 
 .profile-page-public.theme-elegante .profile-action-btn:hover,
@@ -1530,39 +1546,61 @@
   color: #0f172a;
 }
 
+.profile-page-public.theme-elegante .profile-action-btn:hover svg,
+.profile-page-public.theme-classic-light .profile-action-btn:hover svg {
+  stroke: #0f172a;
+  opacity: 1;
+}
+
 /* Tech theme action buttons - neon glow */
 .profile-page-public.theme-tech .profile-action-btn {
-  border-color: rgba(0, 212, 255, 0.3);
+  border-color: rgba(0, 212, 255, 0.5);
+}
+
+.profile-page-public.theme-tech .profile-action-btn svg {
+  stroke: #00d4ff;
 }
 
 .profile-page-public.theme-tech .profile-action-btn:hover {
-  border-color: rgba(0, 212, 255, 0.6);
+  border-color: rgba(0, 212, 255, 0.8);
   box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
 }
 
 /* Neon theme action buttons */
 .profile-page-public.theme-neon .profile-action-btn {
-  border-color: rgba(139, 92, 246, 0.3);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+.profile-page-public.theme-neon .profile-action-btn svg {
+  stroke: #a78bfa;
 }
 
 .profile-page-public.theme-neon .profile-action-btn:hover {
-  border-color: rgba(139, 92, 246, 0.6);
+  border-color: rgba(139, 92, 246, 0.8);
   box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
 }
 
 /* Gradient (Aurora) theme action buttons */
 .profile-page-public.theme-gradient .profile-action-btn {
-  border-color: rgba(168, 85, 247, 0.3);
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.profile-page-public.theme-gradient .profile-action-btn svg {
+  stroke: #c084fc;
 }
 
 .profile-page-public.theme-gradient .profile-action-btn:hover {
-  border-color: rgba(168, 85, 247, 0.6);
+  border-color: rgba(168, 85, 247, 0.8);
   box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
 }
 
 /* Portfolio theme action buttons - uses user-selected color */
 .profile-page-public.theme-portfolio .profile-action-btn {
   border-color: var(--action-color, var(--portfolio-color));
+}
+
+.profile-page-public.theme-portfolio .profile-action-btn svg {
+  stroke: var(--action-color, var(--portfolio-color));
 }
 
 .profile-page-public.theme-portfolio .profile-action-btn:hover {
@@ -1572,8 +1610,11 @@
 
 /* Orbit theme action buttons - uses user-selected color */
 .profile-page-public.theme-orbit .profile-action-btn {
-
   border-color: var(--action-color, var(--orbit-color));
+}
+
+.profile-page-public.theme-orbit .profile-action-btn svg {
+  stroke: var(--action-color, var(--orbit-color));
 }
 
 .profile-page-public.theme-orbit .profile-action-btn:hover {
