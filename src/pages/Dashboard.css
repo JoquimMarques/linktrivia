@@ -1176,6 +1176,79 @@
     width: 100%;
     justify-content: center;
   }
+
+  .qrcode-section {
+    padding: var(--spacing-md);
+  }
+
+  .qrcode-section h3 {
+    font-size: 1.125rem;
+  }
+
+  .qrcode-description {
+    font-size: 0.875rem;
+  }
+
+  .qrcode-preview {
+    padding: var(--spacing-md);
+  }
+
+  .qrcode-url {
+    font-size: 0.75rem;
+    padding: var(--spacing-xs) var(--spacing-md);
+    word-break: break-all;
+    max-width: 100%;
+  }
+
+  .qrcode-free-notice {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-sm);
+  }
+
+  .qrcode-free-notice p {
+    font-size: 0.875rem;
+  }
+
+  .qrcode-type-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .qrcode-type-toggle .toggle-btn {
+    flex: 1;
+    padding: 10px 12px;
+  }
+
+  .qrcode-tips {
+    padding: var(--spacing-md);
+  }
+
+  .qrcode-tips h4 {
+    font-size: 0.875rem;
+  }
+
+  .qrcode-tips li {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .qrcode-section {
+    padding: var(--spacing-sm);
+  }
+
+  .qrcode-preview {
+    padding: var(--spacing-sm);
+  }
+
+  .qrcode-container {
+    gap: var(--spacing-md);
+  }
+
+  .qrcode-url {
+    font-size: 0.6875rem;
+  }
 }
 
 /* Upgrade Card */

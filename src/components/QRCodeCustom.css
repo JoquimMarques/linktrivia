@@ -52,3 +52,26 @@
     background: radial-gradient(circle at center, transparent 40%, rgba(211, 19, 19, 0.05) 100%);
     border-radius: 18px;
 }
+
+/* Responsive */
+@media (max-width: 480px) {
+    .qrcode-custom-wrapper {
+        padding: 0.75rem;
+    }
+
+    .qrcode-custom-frame {
+        padding: 1rem;
+        border-radius: 14px;
+    }
+}
+
+@media (max-width: 360px) {
+    .qrcode-custom-wrapper {
+        padding: 0.5rem;
+    }
+
+    .qrcode-custom-frame {
+        padding: 0.75rem;
+        border-radius: 12px;
+    }
+}

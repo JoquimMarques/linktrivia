@@ -106,11 +106,46 @@
 /* Responsive */
 @media (max-width: 500px) {
   .theme-btn {
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-md);
+    min-width: 0;
+    width: 100%;
+  }
+
+  .theme-color-dot {
+    width: 36px;
+    height: 36px;
+  }
+
+  .theme-btn-name {
+    font-size: 0.875rem;
+  }
+
+  .theme-btn-desc {
+    font-size: 0.6875rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .theme-selector-simple {
+    padding: var(--spacing-sm);
+  }
+
+  .theme-btn {
+    padding: var(--spacing-sm) var(--spacing-sm);
+    gap: var(--spacing-sm);
   }
 
   .theme-color-dot {
     width: 32px;
     height: 32px;
+  }
+
+  .theme-btn-name {
+    font-size: 0.8125rem;
+  }
+
+  .theme-tier-tag {
+    font-size: 0.5625rem;
+    padding: 2px 6px;
   }
 }
