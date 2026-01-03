@@ -40,6 +40,7 @@ const Dashboard = () => {
   const [portfolioPhotos, setPortfolioPhotos] = useState([])
   const [portfolioColor, setPortfolioColor] = useState('#8b5cf6')
   const [orbitColor, setOrbitColor] = useState('#8b5cf6')
+  const [classicColor, setClassicColor] = useState('#0ea5e9')
   const [glassBackground, setGlassBackground] = useState('')
   const [uploadingGlassBackground, setUploadingGlassBackground] = useState(false)
   const [uploadingPortfolioPhoto, setUploadingPortfolioPhoto] = useState(false)
@@ -158,6 +159,7 @@ const Dashboard = () => {
       setPortfolioPhotos(userData.portfolioPhotos || [])
       setPortfolioColor(userData.portfolioColor || '#8b5cf6')
       setOrbitColor(userData.orbitColor || '#8b5cf6')
+      setClassicColor(userData.classicColor || '#0ea5e9')
       setGlassBackground(userData.glassBackground || '')
       setUsername(userData.username || '')
     }
@@ -248,6 +250,19 @@ const Dashboard = () => {
       await refreshUserData()
     } catch (error) {
       console.error('Error saving Orbit color:', error)
+    }
+  }
+
+  const handleClassicColorChange = async (color) => {
+    setClassicColor(color)
+    try {
+      await updateDoc(doc(db, 'users', user.uid), {
+        classicColor: color,
+        updatedAt: serverTimestamp()
+      })
+      await refreshUserData()
+    } catch (error) {
+      console.error('Error saving Classic color:', error)
     }
   }
 
@@ -1493,7 +1508,8 @@ const Dashboard = () => {
                 style={
                   theme === 'orbit' ? { '--orbit-color': orbitColor } :
                     theme === 'portfolio' ? { '--portfolio-color': portfolioColor } :
-                      {}
+                      theme === 'default' ? { '--classic-color': classicColor } :
+                        {}
                 }
               >
                 <div className="preview-content">
@@ -1526,6 +1542,23 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
+
+              {/* Classic Theme Color Picker - below preview */}
+              {theme === 'default' && (
+                <div className="classic-config" style={{ marginTop: '16px' }}>
+                  <h4>Customize Classic</h4>
+                  <p className="config-description">Choose your accent color for buttons and highlights</p>
+                  <div className="color-picker-container">
+                    <input
+                      type="color"
+                      value={classicColor}
+                      onChange={(e) => handleClassicColorChange(e.target.value)}
+                      className="theme-color-picker"
+                    />
+                    <span className="color-hex-value">{classicColor}</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Upgrade Card */}

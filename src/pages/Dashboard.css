@@ -634,6 +634,17 @@
 /* Theme Previews - Backgrounds */
 .preview-phone.theme-default {
   background: linear-gradient(180deg, #0a0a0b 0%, #111113 100%);
+  --classic-color: #0ea5e9;
+  /* Default fallback */
+}
+
+.preview-phone.theme-default .preview-avatar {
+  border: 2px solid color-mix(in srgb, var(--classic-color) 50%, transparent);
+}
+
+.preview-phone.theme-default .preview-link:hover {
+  border-color: var(--classic-color);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--classic-color) 30%, transparent);
 }
 
 .preview-phone.theme-elegante {
@@ -1629,34 +1640,38 @@
   color: var(--orbit-color, #fdba74);
 }
 
-/* CLASSIC LIGHT Theme Preview */
-.preview-phone.theme-classic-light {
-  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border-color: #cbd5e1;
+/* BRAND Theme Preview */
+.preview-phone.theme-brand {
+  background: linear-gradient(135deg, #c5d86d 0%, #8fb339 100%);
 }
 
-.preview-phone.theme-classic-light .preview-name {
-  color: #0f172a;
+.preview-phone.theme-brand .preview-avatar {
+  border: 2px solid rgba(26, 46, 5, 0.5);
 }
 
-.preview-phone.theme-classic-light .preview-username {
-  color: #475569;
+.preview-phone.theme-brand .preview-name {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  color: #1a2e05;
 }
 
-.preview-phone.theme-classic-light .preview-bio {
-  color: #334155;
+.preview-phone.theme-brand .preview-username {
+  color: #2a4a0a;
 }
 
-.preview-phone.theme-classic-light .preview-link {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  color: #0f172a;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+.preview-phone.theme-brand .preview-bio {
+  color: #2a4a0a;
 }
 
-.preview-phone.theme-classic-light .preview-link-favicon {
-  background: #f1f5f9;
-  border: 1px dashed #e2e8f0;
+.preview-phone.theme-brand .preview-link {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 12px;
+  color: #1a2e05;
+}
+
+.preview-phone.theme-brand .preview-link-favicon {
+  background: linear-gradient(135deg, #c5d86d 0%, #8fb339 100%);
 }
 
 /* Orbit Config */

@@ -60,6 +60,7 @@ const Pricing = () => {
       displayFeatures: [
         { text: 'Unlimited links', included: true },
         { text: 'All 9 Themes (+ Portfolio, Orbit, Modern)', included: true },
+        { text: 'Verified Badge ✓', included: true },
         { text: 'Custom QR Code', included: true },
         { text: 'Smart Stats (30 days)', included: true },
         { text: 'Remove Branding', included: true },
@@ -73,6 +74,7 @@ const Pricing = () => {
       cta: 'Subscribe Premium',
       displayFeatures: [
         { text: 'Everything in Pro', included: true },
+        { text: 'Verified Badge ✓', included: true },
         { text: 'Unlimited Analytics History', included: true },
         { text: 'Traffic Sources', included: true },
         { text: 'Avg. Time on Page', included: true },
@@ -115,6 +117,7 @@ const Pricing = () => {
   const comparisonFeatures = [
     { name: 'Links', free: '5', basic: 'Unlimited', pro: 'Unlimited', premium: 'Unlimited' },
     { name: 'Themes Available', free: '3 Basic', basic: '6 Themes', pro: 'All 9', premium: 'All 9' },
+    { name: 'Verified Badge ✓', free: false, basic: false, pro: true, premium: true },
     { name: 'QR Code', free: 'Basic', basic: 'Custom', pro: 'Custom', premium: 'Custom' },
     { name: 'Analytics Period', free: '7 days', basic: '14 days', pro: '30 days', premium: 'Unlimited' },
     { name: 'Total Clicks & Views', free: true, basic: true, pro: true, premium: true },

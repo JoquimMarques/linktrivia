@@ -5,18 +5,10 @@ const themes = [
   // FREE THEMES
   {
     id: 'default',
-    name: 'Classic (Dark)',
-    description: 'Minimalist Dark',
+    name: 'Classic',
+    description: 'Customizable accent color',
     color: '#8b8a8aff',
     bgPreview: 'linear-gradient(180deg, #0a0a0b 0%, #1a1a1d 100%)',
-    tier: 'free'
-  },
-  {
-    id: 'classic-light',
-    name: 'Classic (Light)',
-    description: 'Minimalist Light',
-    color: '#cbd5e1',
-    bgPreview: 'linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%)',
     tier: 'free'
   },
   {
@@ -34,6 +26,14 @@ const themes = [
     color: '#767676ff',
     bgPreview: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(100,100,100,0.2) 100%)',
     tier: 'basic'
+  },
+  {
+    id: 'brand',
+    name: 'Brand',
+    description: 'Blended photo + card grid',
+    color: '#a3c639',
+    bgPreview: 'linear-gradient(135deg, #c5d86d 0%, #8fb339 100%)',
+    tier: 'pro'
   },
 
   // BASIC THEMES

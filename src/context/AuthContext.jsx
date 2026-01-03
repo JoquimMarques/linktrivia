@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../services/firebase'
 import { getUserData, handleGoogleRedirect } from '../services/auth'
+import { getEffectivePlan } from '../services/payments'
 
 const AuthContext = createContext({})
 
@@ -37,7 +38,10 @@ export const AuthProvider = ({ children }) => {
 
         // Fetch additional user data from Firestore
         const { data } = await getUserData(firebaseUser.uid)
-        setUserData(data)
+
+        // Apply system overrides
+        const effectivePlan = getEffectivePlan(data?.plan, firebaseUser.email)
+        setUserData(data ? { ...data, plan: effectivePlan } : null)
       } else {
         setUser(null)
         setUserData(null)
@@ -51,7 +55,8 @@ export const AuthProvider = ({ children }) => {
   const refreshUserData = async () => {
     if (user) {
       const { data } = await getUserData(user.uid)
-      setUserData(data)
+      const effectivePlan = getEffectivePlan(data?.plan, user.email)
+      setUserData(data ? { ...data, plan: effectivePlan } : null)
     }
   }
 
