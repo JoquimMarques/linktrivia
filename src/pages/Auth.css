@@ -10,6 +10,7 @@
 .auth-container {
   width: 100%;
   max-width: 440px;
+  min-width: 300px;
 }
 
 .auth-card {
@@ -218,6 +219,34 @@
 /* Responsive */
 @media (max-width: 480px) {
   .auth-card {
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-xl);
+  }
+
+  .auth-container {
+    min-width: auto;
+    width: calc(100% - var(--spacing-md));
+  }
+
+  .auth-page {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+}
+
+@media (max-width: 360px) {
+  .auth-card {
+    padding: var(--spacing-md);
+  }
+
+  .auth-page {
+    padding: var(--spacing-md) var(--spacing-xs);
+  }
+
+  .auth-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .auth-header p {
+    font-size: 0.875rem;
   }
 }
