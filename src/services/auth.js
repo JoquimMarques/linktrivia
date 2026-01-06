@@ -15,6 +15,48 @@ import { auth, db } from './firebase'
 
 const googleProvider = new GoogleAuthProvider()
 
+// Translate Firebase error codes to user-friendly messages
+const getErrorMessage = (error) => {
+  const errorCode = error?.code || ''
+
+  const errorMessages = {
+    // Authentication errors
+    'auth/invalid-email': 'Invalid email. Please check the format.',
+    'auth/user-disabled': 'This account has been disabled.',
+    'auth/user-not-found': 'No account found with this email.',
+    'auth/wrong-password': 'Incorrect password. Please try again.',
+    'auth/invalid-credential': 'Invalid credentials. Please check your details.',
+    'auth/email-already-in-use': 'This email is already in use.',
+    'auth/weak-password': 'Password is too weak. Use at least 6 characters.',
+    'auth/operation-not-allowed': 'This login method is not enabled.',
+    'auth/too-many-requests': 'Too many attempts. Please wait a few minutes.',
+
+    // Google Sign-In errors
+    'auth/popup-blocked': 'Popup blocked by browser. Please allow popups and try again.',
+    'auth/popup-closed-by-user': 'Login cancelled. Please try again.',
+    'auth/cancelled-popup-request': 'Login cancelled. Please try again.',
+    'auth/account-exists-with-different-credential': 'An account already exists with this email using a different login method.',
+    'auth/credential-already-in-use': 'This credential is already associated with another account.',
+    'auth/auth-domain-config-required': 'Configuration error. Please contact support.',
+    'auth/unauthorized-domain': 'This domain is not authorized for login.',
+
+    // Network errors
+    'auth/network-request-failed': 'Connection error. Please check your internet.',
+    'auth/timeout': 'Request timed out. Please try again.',
+
+    // Redirect errors (common on mobile)
+    'auth/redirect-cancelled-by-user': 'Login cancelled. Please try again.',
+    'auth/redirect-operation-pending': 'A login is already in progress. Please wait.',
+
+    // General errors
+    'auth/internal-error': 'Internal error. Please try again later.',
+    'auth/invalid-api-key': 'Configuration error. Please contact support.',
+    'auth/app-deleted': 'Application not configured correctly.'
+  }
+
+  return errorMessages[errorCode] || 'An error occurred. Please try again.'
+}
+
 // Register new user
 export const registerUser = async (email, password, username) => {
   try {
@@ -49,7 +91,7 @@ export const registerUser = async (email, password, username) => {
 
     return { user, error: null }
   } catch (error) {
-    return { user: null, error: error.message }
+    return { user: null, error: getErrorMessage(error) }
   }
 }
 
@@ -59,7 +101,7 @@ export const loginUser = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password)
     return { user: userCredential.user, error: null }
   } catch (error) {
-    return { user: null, error: error.message }
+    return { user: null, error: getErrorMessage(error) }
   }
 }
 
@@ -106,6 +148,15 @@ export const signInWithGoogle = async () => {
       await setDoc(doc(db, 'usernames', username.toLowerCase()), {
         uid: user.uid
       })
+    } else {
+      // Update email if missing or different (ensures premium validation works)
+      const existingData = userDoc.data()
+      if (!existingData.email || existingData.email !== user.email) {
+        await updateDoc(doc(db, 'users', user.uid), {
+          email: user.email,
+          updatedAt: serverTimestamp()
+        })
+      }
     }
 
     return { user, error: null }
@@ -116,10 +167,10 @@ export const signInWithGoogle = async () => {
         await signInWithRedirect(auth, googleProvider)
         return { user: null, error: null, redirecting: true }
       } catch (redirectError) {
-        return { user: null, error: redirectError.message }
+        return { user: null, error: getErrorMessage(redirectError) }
       }
     }
-    return { user: null, error: error.message }
+    return { user: null, error: getErrorMessage(error) }
   }
 }
 
@@ -155,6 +206,15 @@ export const handleGoogleRedirect = async () => {
         await setDoc(doc(db, 'usernames', username.toLowerCase()), {
           uid: user.uid
         })
+      } else {
+        // Update email if missing or different (ensures premium validation works)
+        const existingData = userDoc.data()
+        if (!existingData.email || existingData.email !== user.email) {
+          await updateDoc(doc(db, 'users', user.uid), {
+            email: user.email,
+            updatedAt: serverTimestamp()
+          })
+        }
       }
 
       return { user, error: null }
@@ -162,7 +222,7 @@ export const handleGoogleRedirect = async () => {
 
     return { user: null, error: null }
   } catch (error) {
-    return { user: null, error: error.message }
+    return { user: null, error: getErrorMessage(error) }
   }
 }
 
@@ -172,7 +232,7 @@ export const logoutUser = async () => {
     await signOut(auth)
     return { error: null }
   } catch (error) {
-    return { error: error.message }
+    return { error: getErrorMessage(error) }
   }
 }
 
@@ -182,7 +242,7 @@ export const resetPassword = async (email) => {
     await sendPasswordResetEmail(auth, email)
     return { error: null }
   } catch (error) {
-    return { error: error.message }
+    return { error: getErrorMessage(error) }
   }
 }
 

@@ -421,7 +421,13 @@ const Analytics = () => {
           {/* Period Comparison - Premium only */}
           {canSeePeriodComparison ? (
             <div className="stat-detail-card card">
-              <h3><TrendingUp size={20} /> Period Comparison</h3>
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="22,7 13.5,15.5 8.5,10.5 2,17" />
+                  <polyline points="16,7 22,7 22,13" />
+                </svg>
+                Period Comparison
+              </h3>
               <div className="comparison-stats">
                 <div className="comparison-item">
                   <span className="comparison-label">Views</span>
