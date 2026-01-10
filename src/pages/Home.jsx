@@ -33,7 +33,7 @@ const Home = () => {
       description: 'Share all your important links with a single memorable URL'
     },
     {
-      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>,
+      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><rect x="16" y="10" width="4" height="10" rx="1" fill="url(#gradient2)" /><rect x="10" y="4" width="4" height="16" rx="1" fill="url(#gradient2)" /><rect x="4" y="14" width="4" height="6" rx="1" fill="url(#gradient2)" /></svg>,
       title: 'Powerful Analytics',
       description: 'Track clicks, views, and engagement with detailed insights'
     },
@@ -53,16 +53,16 @@ const Home = () => {
       description: 'Enterprise-grade security with 99.9% guaranteed uptime'
     },
     {
-      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient6)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient6" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" /></svg>,
+      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient6)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient6" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><circle cx="12" cy="18" r="1" fill="url(#gradient6)" /></svg>,
       title: 'Mobile Optimized',
       description: 'Perfect experience on any device, anywhere'
     }
   ]
 
   const stats = [
-    { value: '10M+', label: 'Links Created' },
+    { value: '1M+', label: 'Links Created' },
     { value: '50M+', label: 'Monthly Clicks' },
-    { value: '99.9%', label: 'Uptime' },
+    { value: '92.4%', label: 'Uptime' },
     { value: '150+', label: 'Countries' }
   ]
 
@@ -250,7 +250,7 @@ const Home = () => {
               <Link to="/terms">Terms of Service</Link>
             </div>
             <p className="footer-copyright">
-              © {new Date().getFullYear()} Orbilink. All rights reserved.
+              © {new Date().getFullYear()} Orbil.ink All rights reserved.
             </p>
           </div>
         </div>
