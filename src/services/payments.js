@@ -47,7 +47,7 @@ export const PLANS = {
   basic: {
     id: 'basic',
     name: 'Basic',
-    price: 1.99,
+    price: 1.39,
     currency: '€',
     interval: 'week',
     intervalLabel: 'per week',
@@ -82,7 +82,7 @@ export const PLANS = {
   pro: {
     id: 'pro',
     name: 'Pro',
-    price: 3.99,
+    price: 3.39,
     currency: '€',
     interval: 'month',
     intervalLabel: 'per month',
@@ -119,7 +119,7 @@ export const PLANS = {
   premium: {
     id: 'premium',
     name: 'Premium',
-    price: 39.99,
+    price: 28.99,
     currency: '€',
     interval: 'year',
     intervalLabel: 'per year',
