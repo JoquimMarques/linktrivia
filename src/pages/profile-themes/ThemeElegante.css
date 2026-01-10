@@ -1,0 +1,233 @@
+/* ==========================================
+   THEME: ELEGANTE - Claro com dourado
+   Baseado no modelo 1.png
+   ========================================== */
+
+/* Import elegant fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700&display=swap');
+
+.profile-page-public.theme-elegante {
+    background: transparent;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Fixed background image that covers entire viewport */
+.profile-page-public.theme-elegante::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background:
+        linear-gradient(rgba(238, 175, 112, 0.4),
+            rgba(200, 158, 116, 0.35)),
+        url('/src/assets/elegante.png') center center / cover no-repeat;
+    z-index: -1;
+}
+
+/* Elegante: Avatar */
+.profile-page-public.theme-elegante .profile-avatar-public {
+    border: 2px solid #f6e4ac;
+    width: 180px;
+    height: 180px;
+    box-shadow: 0 10px 40px rgba(108, 84, 38, 0.3);
+    margin-bottom: var(--spacing-md);
+    margin-top: -40px;
+}
+
+.profile-page-public.theme-elegante .avatar-placeholder-public {
+    background: linear-gradient(135deg, #f6e4ac 0%, #c9a227 100%);
+    color: #ffffff;
+    font-size: 3.5rem;
+}
+
+/* Elegante: Nome em dourado elegante */
+.profile-page-public.theme-elegante .profile-name-public {
+    color: #452404;
+    font-family: 'Cinzel', 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    text-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+}
+
+/* Elegante: Username */
+.profile-page-public.theme-elegante .profile-username-public {
+    color: #3d2c02;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-size: 1.2rem !important;
+    margin-bottom: var(--spacing-md);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+}
+
+/* Elegante: Bio */
+.profile-page-public.theme-elegante .profile-bio-public {
+    color: #452404;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto var(--spacing-xl);
+    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.6);
+}
+
+/* Elegante: Botões dourados */
+.profile-page-public.theme-elegante .link-button {
+    background: linear-gradient(135deg, #f6de95 0%, #d4af37 50%, #b8960c 100%);
+    border: none;
+    border-radius: 40px;
+    border: 2px solid #f6e4ac;
+    padding: 9px 20px;
+    box-shadow: 0 4px 12px rgba(180, 140, 60, 0.2);
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto -10px;
+    transition: all 0.3s ease;
+}
+
+.profile-page-public.theme-elegante .link-button:hover {
+    background: linear-gradient(135deg, #ebd07f 0%, #e0bd4c 50%, #c4a00e 100%);
+    box-shadow: 0 8px 25px rgba(180, 140, 60, 0.4);
+    transform: translateY(-3px) scale(1.02);
+}
+
+/* Elegante: Título do link - texto escuro */
+.profile-page-public.theme-elegante .link-title {
+    color: #2c241b;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    flex: 1;
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Elegante: Favicon em círculo */
+.profile-page-public.theme-elegante .link-favicon {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #764e03;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.profile-page-public.theme-elegante .link-favicon img {
+    width: 25px;
+    height: 25px;
+    border-radius: 7px;
+    filter: sepia(100%) hue-rotate(10deg) saturate(200%);
+}
+
+/* Elegante: Seta */
+.profile-page-public.theme-elegante .link-arrow {
+    color: rgba(61, 50, 36, 0.7);
+}
+
+/* Elegante: Espaçamento dos links */
+.profile-page-public.theme-elegante .main-links-section {
+    gap: 15px;
+    max-width: 420px;
+    margin: 0 auto;
+    padding-bottom: var(--spacing-2xl);
+}
+
+/* Elegante: Container mais compacto */
+.profile-page-public.theme-elegante .profile-container-public {
+    max-width: 600px;
+    padding: var(--spacing-xl);
+}
+
+/* Elegante: Ícone decorativo */
+.elegante-decorative-icon {
+    margin-bottom: var(--spacing-sm);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.elegante-decorative-icon svg {
+    filter: drop-shadow(0 2px 4px rgba(180, 140, 60, 0.2));
+}
+
+/* Elegante: Nome com fonte elegante */
+.profile-page-public.theme-elegante .profile-name-public {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+/* Elegante: Username */
+.profile-page-public.theme-elegante .profile-username-public {
+    font-size: 0.8125rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Elegante: Bio */
+.profile-page-public.theme-elegante .profile-bio-public {
+    font-size: 0.875rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Elegante: Seção de ícones */
+.profile-page-public.theme-elegante .icon-links-section {
+    border-top: none;
+    padding-top: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+   
+    gap: 24px;
+}
+
+.profile-page-public.theme-elegante .icon-link {
+    background: #dcbc6a;
+    border: 2px solid #fcf2bc;
+   
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    width: 55px;
+    height: 55px;
+    margin-top: -28px;
+}
+
+.profile-page-public.theme-elegante .icon-link:hover {
+    border-color: #f1d77f;
+    box-shadow: 0 4px 12px rgba(180, 140, 60, 0.2);
+    transform: translateY(-2px) scale(1.05);
+}
+
+.profile-page-public.theme-elegante .icon-link img {
+    width: 28px;
+    height: 28px;
+}
+
+/* Elegante: Branding */
+.profile-page-public.theme-elegante .profile-branding-public a {
+    background: rgba(201, 162, 39, 0.1);
+    border: 2px solid rgba(201, 162, 39, 0.3);
+    color: #5a4d3e;
+}
+
+.profile-page-public.theme-elegante .profile-branding-public a:hover {
+    background: rgba(201, 162, 39, 0.2);
+    border-color: #c9a227;
+}
+
+.profile-page-public.theme-elegante .branding-text {
+    background: linear-gradient(135deg, #d4af37 0%, #b8960c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

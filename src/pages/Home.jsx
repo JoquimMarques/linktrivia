@@ -28,32 +28,32 @@ const Home = () => {
 
   const features = [
     {
-      icon: '🔗',
+      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>,
       title: 'One Link for Everything',
       description: 'Share all your important links with a single memorable URL'
     },
     {
-      icon: '📊',
+      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>,
       title: 'Powerful Analytics',
       description: 'Track clicks, views, and engagement with detailed insights'
     },
     {
-      icon: '🎨',
+      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><circle cx="13.5" cy="6.5" r=".5" /><circle cx="17.5" cy="10.5" r=".5" /><circle cx="8.5" cy="7.5" r=".5" /><circle cx="6.5" cy="12.5" r=".5" /><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z" /></svg>,
       title: 'Custom Themes',
       description: 'Make your page unique with beautiful and customizable themes'
     },
     {
-      icon: '⚡',
+      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>,
       title: 'Super Fast',
       description: 'Optimized for speed with instant worldwide loading'
     },
     {
-      icon: '🔒',
+      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>,
       title: 'Secure & Reliable',
       description: 'Enterprise-grade security with 99.9% guaranteed uptime'
     },
     {
-      icon: '📱',
+      icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient6)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="gradient6" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" /></svg>,
       title: 'Mobile Optimized',
       description: 'Perfect experience on any device, anywhere'
     }
@@ -94,7 +94,7 @@ const Home = () => {
       <section className="hero">
         <div className="hero-content">
           <div className="hero-badge">
-            <span className="badge-icon">✨</span>
+            <svg className="badge-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#badgeGradient)" strokeWidth="2"><defs><linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
             <span>The link-in-bio platform for professionals</span>
           </div>
 

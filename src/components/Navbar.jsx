@@ -163,7 +163,7 @@ const Navbar = () => {
               onClick={() => { toggleTheme(); setMobileMenuOpen(false); }}
               className="mobile-link"
             >
-              {isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
+              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
             </button>
             <button
               onClick={() => { logout(); setMobileMenuOpen(false); }}

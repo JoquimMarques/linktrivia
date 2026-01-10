@@ -1,0 +1,48 @@
+/* ==========================================
+   Profile Base Styles
+   ========================================== */
+
+/* Public Profile Page */
+.profile-page-public {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: var(--spacing-xl) var(--spacing-lg);
+    position: relative;
+    transition: background var(--transition-base);
+    overflow-x: hidden;
+}
+
+/* Hide scrollbar but allow scrolling */
+.profile-page-public::-webkit-scrollbar {
+    display: none;
+}
+
+.profile-page-public {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Verified Badge for Pro Users */
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.verified-badge svg {
+    width: 20px;
+    height: 20px;
+    filter: drop-shadow(0 2px 4px rgba(29, 156, 240, 0.513));
+}
+
+/* Adjust badge size for different themes */
+.orbit-name .verified-badge svg,
+.modern-name .verified-badge svg,
+.brand-name .verified-badge svg {
+    width: 22px;
+    height: 22px;
+}

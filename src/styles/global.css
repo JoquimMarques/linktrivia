@@ -329,6 +329,9 @@ a:hover {
   padding: var(--spacing-xl);
   backdrop-filter: blur(10px);
   transition: all var(--transition-base);
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .card:hover {

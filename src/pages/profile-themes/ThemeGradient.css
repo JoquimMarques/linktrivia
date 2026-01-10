@@ -1,0 +1,281 @@
+/* ==========================================
+   THEME: AURORA (Gradient)
+   ========================================== */
+.profile-page-public.theme-gradient {
+    background: linear-gradient(135deg, #4c1d95 0%, #8a49c6 40%, #db2777 100%);
+    overflow-x: hidden;
+}
+
+.profile-page-public.theme-gradient::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.profile-page-public.theme-gradient .profile-container-public {
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Aurora Typography */
+.profile-page-public.theme-gradient .profile-name-public {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    font-size: 1.75rem;
+    margin-bottom: 2px;
+}
+
+.profile-page-public.theme-gradient .profile-username-public {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.profile-page-public.theme-gradient .profile-bio-public {
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 460px;
+    margin: 0 auto var(--spacing-xl);
+}
+
+.profile-page-public.theme-gradient .profile-avatar-public {
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    width: 150px;
+    height: 150px;
+    border-radius: 15px 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    margin-bottom: var(--spacing-md);
+    margin-top: -30px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* AURORA THEME - Links principais */
+.profile-page-public.theme-gradient .link-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 12px 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    padding: 12px 20px;
+    margin-bottom: 3px;
+    max-width: 480px;
+    width: 100%;
+}
+
+.profile-page-public.theme-gradient .link-button::before {
+    display: none;
+}
+
+.profile-page-public.theme-gradient .link-button:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.profile-page-public.theme-gradient .link-button:active {
+    transform: scale(0.98);
+}
+
+/* Título dos links */
+.profile-page-public.theme-gradient .link-title {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    text-shadow: none;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Favicon dos links */
+.profile-page-public.theme-gradient .link-favicon {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 80px;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+}
+
+.profile-page-public.theme-gradient .link-favicon img {
+    width: 26px;
+    height: 26px;
+    filter: none !important;
+}
+
+/* Seta indicadora */
+.profile-page-public.theme-gradient .link-arrow {
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.profile-page-public.theme-gradient .link-button:hover .link-arrow {
+    color: rgba(255, 255, 255, 1);
+    transform: translateX(3px);
+}
+
+/* Ícones pequenos (Sidebar Direita) */
+.profile-page-public.theme-gradient .icon-links-section {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 32px;
+    padding-top: 0;
+    border: none;
+}
+
+/* Desktop: Right Fixed Sidebar */
+@media (min-width: 768px) {
+    .profile-page-public.theme-gradient .icon-links-section {
+        position: fixed;
+        right: -70px;
+        top: 50%;
+        transform: translateY(-50%);
+        flex-direction: column;
+        margin: 0;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 16px 8px;
+        border-radius: 12px;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.profile-page-public.theme-gradient .icon-link {
+    background: rgba(255, 255, 255, 0.15);
+    width: 44px;
+    height: 44px;
+    border-radius: 120px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.profile-page-public.theme-gradient .icon-link:hover {
+    background: #ffffff;
+    border-color: #ffffff;
+    transform: scale(1.1);
+    color: #a855f7;
+    z-index: 100;
+}
+
+.profile-page-public.theme-gradient .icon-link img {
+    width: 25px;
+    height: 25px;
+    filter: none !important;
+    transition: all 0.2s ease;
+}
+
+.profile-page-public.theme-gradient .icon-link:hover img {
+    filter: none;
+}
+
+/* Branding e rodapé */
+.profile-page-public.theme-gradient .profile-branding-public a {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    padding: 10px 20px;
+    color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.profile-page-public.theme-gradient .profile-branding-public a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-page-public.theme-gradient .branding-text {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.85) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Animações adicionais */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.profile-page-public.theme-gradient .link-button:nth-child(odd):hover {
+    animation: float 2s ease-in-out infinite;
+}
+
+/* Efeito de pulso nos ícones */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 12px rgba(255, 255, 255, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+
+.profile-page-public.theme-gradient .icon-link:hover {
+    animation: pulse 1.5s infinite;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .profile-page-public.theme-gradient .link-button {
+        padding: 16px 20px;
+        border-radius: 14px;
+    }
+
+    .profile-page-public.theme-gradient .icon-link {
+        width: 48px;
+        height: 48px;
+        margin: 0 6px;
+    }
+
+    .profile-page-public.theme-gradient .link-title {
+        font-size: 15px;
+    }
+}

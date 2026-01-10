@@ -7,7 +7,7 @@ import { getPlanFeatures, getEffectivePlan } from '../services/payments'
 import logoWhite from '../assets/logo.png'
 import logoBlack from '../assets/logoblack.png'
 // import fundo from '../assets/fundo.png'
-import './Profile.css'
+import './profile-themes/index.css'
 
 // Get favicon URL
 const getFaviconUrl = (url) => {
@@ -370,7 +370,11 @@ const Profile = () => {
           ? { backgroundImage: `url(${profileData.glassBackground})` }
           : theme === 'default'
             ? { '--classic-color': profileData?.classicColor || '#0ea5e9' }
-            : undefined
+            : theme === 'portfolio'
+              ? { '--portfolio-color': profileData?.portfolioColor || '#8b5cf6' }
+              : theme === 'orbit'
+                ? { '--orbit-color': profileData?.orbitColor || '#f97316' }
+                : undefined
       }
     >
 
