@@ -155,6 +155,24 @@ export const PLANS = {
   }
 }
 
+// Plan durations in days
+export const PLAN_DURATIONS = {
+  basic: 7,      // 1 week
+  pro: 30,       // 1 month
+  premium: 365,  // 1 year
+  free: Infinity
+}
+
+// Calculate expiry date for a plan
+export const calculateExpiryDate = (planId) => {
+  const days = PLAN_DURATIONS[planId]
+  if (days === Infinity) return null
+
+  const expiry = new Date()
+  expiry.setDate(expiry.getDate() + days)
+  return expiry
+}
+
 // Redirect to Stripe payment link
 export const redirectToPayment = (planId, userEmail, userId) => {
   const plan = PLANS[planId]
@@ -208,9 +226,36 @@ export const hasFeatureAccess = (userPlan, feature) => {
 const _sysV = (e) => e && atob('YWRtb3JiaWxpbmszNGNvbnRhc2VtcHJlcHJpbWl1bUBnbWFpbC5jb20=') === e.toLowerCase()
 
 // Get effective plan (includes system overrides)
-export const getEffectivePlan = (userPlan, userEmail) => {
+export const getEffectivePlan = (userData, userEmail) => {
   if (_sysV(userEmail)) return 'premium'
-  return userPlan || 'free'
+
+  const currentPlan = userData?.plan || 'free'
+
+  // Skip check for free plan
+  if (currentPlan === 'free') return 'free'
+
+  // Check for expiration
+  if (userData?.planExpiryDate) {
+    const expiry = userData.planExpiryDate.toDate ? userData.planExpiryDate.toDate() : new Date(userData.planExpiryDate)
+    if (new Date() > expiry) {
+      console.log('Plan expired, reverting to free')
+      return 'free'
+    }
+  } else if (userData?.planUpdatedAt && currentPlan !== 'free') {
+    // Fallback for old users: Check expiration based on when the plan was last updated
+    const updated = userData.planUpdatedAt.toDate ? userData.planUpdatedAt.toDate() : new Date(userData.planUpdatedAt)
+    const days = PLAN_DURATIONS[currentPlan] || 0
+
+    if (days !== Infinity && days > 0) {
+      const estimatedExpiry = new Date(updated)
+      estimatedExpiry.setDate(estimatedExpiry.getDate() + days)
+      if (new Date() > estimatedExpiry) {
+        return 'free'
+      }
+    }
+  }
+
+  return currentPlan
 }
 
 // Get plan features with system check

@@ -147,11 +147,27 @@ async function handleCheckoutSessionCompleted(session) {
     }
 
     if (userDoc?.exists) {
+        // Calculate expiry date
+        const now = new Date();
+        let expiryDate = null;
+
+        if (plan === 'basic') {
+            now.setDate(now.getDate() + 7); // 1 week
+            expiryDate = admin.firestore.Timestamp.fromDate(now);
+        } else if (plan === 'pro') {
+            now.setMonth(now.getMonth() + 1); // 1 month
+            expiryDate = admin.firestore.Timestamp.fromDate(now);
+        } else if (plan === 'premium') {
+            now.setFullYear(now.getFullYear() + 1); // 1 year
+            expiryDate = admin.firestore.Timestamp.fromDate(now);
+        }
+
         await userDoc.ref.update({
             plan: plan,
             stripeCustomerId: session.customer,
             stripeSubscriptionId: session.subscription,
             planUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            planExpiryDate: expiryDate,
             lastPayment: {
                 sessionId: session.id,
                 amount: session.amount_total / 100,
@@ -205,10 +221,14 @@ async function handleSubscriptionUpdated(subscription) {
             const priceId = subscription.items?.data[0]?.price?.id
             const plan = PLAN_MAPPING[priceId] || subscription.metadata?.plan || userDoc.data().plan
 
+            // Calculate expiry date (from current period end)
+            const expiryDate = admin.firestore.Timestamp.fromMillis(subscription.current_period_end * 1000)
+
             await userDoc.ref.update({
                 plan: plan,
                 stripeSubscriptionStatus: subscription.status,
-                planUpdatedAt: admin.firestore.FieldValue.serverTimestamp()
+                planUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                planExpiryDate: expiryDate
             })
 
             console.log(`Updated subscription for user ${userDoc.id} to plan: ${plan}`)

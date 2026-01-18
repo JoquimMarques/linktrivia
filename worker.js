@@ -272,12 +272,28 @@ async function downgradeUserToFree(userId, reason, env) {
  */
 async function updateUserPlan(userId, plan, paymentInfo, env) {
     const projectId = env.FIREBASE_PROJECT_ID;
-    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${userId}?updateMask.fieldPaths=plan&updateMask.fieldPaths=planUpdatedAt&updateMask.fieldPaths=lastPayment&updateMask.fieldPaths=stripeCustomerId`;
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${userId}?updateMask.fieldPaths=plan&updateMask.fieldPaths=planUpdatedAt&updateMask.fieldPaths=planExpiryDate&updateMask.fieldPaths=lastPayment&updateMask.fieldPaths=stripeCustomerId`;
+
+    // Calculate expiry date
+    const now = new Date();
+    let expiryDate = null;
+
+    if (plan === 'basic') {
+        now.setDate(now.getDate() + 7); // 1 week
+        expiryDate = now.toISOString();
+    } else if (plan === 'pro') {
+        now.setMonth(now.getMonth() + 1); // 1 month
+        expiryDate = now.toISOString();
+    } else if (plan === 'premium') {
+        now.setFullYear(now.getFullYear() + 1); // 1 year
+        expiryDate = now.toISOString();
+    }
 
     const body = {
         fields: {
             plan: { stringValue: plan },
             planUpdatedAt: { timestampValue: new Date().toISOString() },
+            planExpiryDate: expiryDate ? { timestampValue: expiryDate } : { nullValue: null },
             stripeCustomerId: { stringValue: paymentInfo.stripeCustomerId || '' },
             lastPayment: {
                 mapValue: {

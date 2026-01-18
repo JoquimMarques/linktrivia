@@ -39,8 +39,23 @@ export const AuthProvider = ({ children }) => {
         // Fetch additional user data from Firestore
         const { data } = await getUserData(firebaseUser.uid)
 
-        // Apply system overrides
-        const effectivePlan = getEffectivePlan(data?.plan, firebaseUser.email)
+        // Apply system overrides and check expiration
+        const effectivePlan = getEffectivePlan(data, firebaseUser.email)
+
+        // If data exists but plan in Firestore is different from effective plan (expiration), update it
+        if (data && data.plan !== effectivePlan && effectivePlan === 'free') {
+          try {
+            const { doc, updateDoc } = await import('firebase/firestore')
+            const { db } = await import('../services/firebase')
+            await updateDoc(doc(db, 'users', firebaseUser.uid), {
+              plan: 'free',
+              planExpiredAt: new Date().toISOString()
+            })
+          } catch (e) {
+            console.error('Error auto-downgrading expired plan:', e)
+          }
+        }
+
         setUserData(data ? { ...data, plan: effectivePlan } : null)
       } else {
         setUser(null)
@@ -55,7 +70,22 @@ export const AuthProvider = ({ children }) => {
   const refreshUserData = async () => {
     if (user) {
       const { data } = await getUserData(user.uid)
-      const effectivePlan = getEffectivePlan(data?.plan, user.email)
+      const effectivePlan = getEffectivePlan(data, user.email)
+
+      // Auto-downgrade check on refresh too
+      if (data && data.plan !== effectivePlan && effectivePlan === 'free') {
+        try {
+          const { doc, updateDoc } = await import('firebase/firestore')
+          const { db } = await import('../services/firebase')
+          await updateDoc(doc(db, 'users', user.uid), {
+            plan: 'free',
+            planExpiredAt: new Date().toISOString()
+          })
+        } catch (e) {
+          console.error('Error auto-downgrading expired plan on refresh:', e)
+        }
+      }
+
       setUserData(data ? { ...data, plan: effectivePlan } : null)
     }
   }

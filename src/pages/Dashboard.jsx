@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { useAuth } from '../context/AuthContext'
 import { db } from '../services/firebase'
-import { getPlanFeatures, PLANS } from '../services/payments'
+import { getPlanFeatures, PLANS, calculateExpiryDate } from '../services/payments'
 import { updateUsername, checkUsernameAvailability } from '../services/auth'
 import ThemeSelector from '../components/ThemeSelector'
 import QRCodeCustom from '../components/QRCodeCustom'
@@ -116,11 +116,13 @@ const Dashboard = () => {
       if (upgradedPlan && ['basic', 'pro', 'premium'].includes(upgradedPlan)) {
         // Update user plan in Firestore
         try {
+          const expiryDate = calculateExpiryDate(upgradedPlan)
           await updateDoc(doc(db, 'users', user.uid), {
             plan: upgradedPlan,
-            planUpdatedAt: serverTimestamp()
+            planUpdatedAt: serverTimestamp(),
+            planExpiryDate: expiryDate ? expiryDate : null
           })
-          console.log(`Plan updated to: ${upgradedPlan}`)
+          console.log(`Plan updated to: ${upgradedPlan} (Expiry: ${expiryDate})`)
         } catch (error) {
           console.error('Error updating plan:', error)
         }
